@@ -1,26 +1,35 @@
 \section{Assessment}
-The course is tested with two exams: a series of practical assignments, a brief oral check of sthe practical assignments, and a theoretical exam. The final grade is determined as follows: \\
+	The course is tested with two exams: a series of practical assignments, a brief oral check of sthe practical assignments, and a theoretical exam. The final grade is determined as follows: \\
 
-\texttt{if theoryGrade $\geq$ 75\% \& practicumCheckOK then return practicumGrade else return insufficient}
+	\texttt{if theoryGrade $\geq$ 75\% \& practicumCheckOK then return practicumGrade else return insufficient}
 
-This means that the theoretical knowledge is a strict requirement in order to get the actual grade from the practicums, but it does not reflect your level of skill and as such does not further influence your grade.
+	This means that the theoretical knowledge is a strict requirement in order to get the actual grade from the practicums, but it does not reflect your level of skill and as such does not further influence your grade.
 
-\paragraph*{Motivation for grade}
-A professional software developer is required to be able to program code which is, at the very least, \textit{correct}.
+	\paragraph*{Motivation for grade}
+		A professional software developer is required to be able to program code which is, at the very least, \textit{correct}.
 
-In order to produce correct code, we expect students to show:
-\begin{inparaenum}[\itshape i\upshape)]
-\item a foundation of knowledge about how a programming language actually works in connection with a simplified concrete model of a computer;
-\item fluency when actually writing the code.
-\end{inparaenum}
+		In order to produce correct code, we expect students to show:
+		\begin{inparaenum}[\itshape i\upshape)]
+			\item a foundation of knowledge about how a programming language actually works in connection with a simplified concrete model of a computer;
+			\item fluency when actually writing the code.
+		\end{inparaenum}
 
-The quality of the programmer is ultimately determined by his actual code-writing skills, therefore the final grade comes only from the practicums. The quick oral check ensures that each student is able to show that his work is his own and that he has adequate understanding of its mechanisms. The theoretical exam tests that the required foundation of knowledge is also present to avoid away of programming that is exclusively based on intuition, but which is also grounded in concrete and precise knowledge about what each instruction does.
-
-
-\subsection{Theoretical examination DEV I}
-The general shape of a theoretical exam for \texttt{DEV I} is made up of a series of highly structured open questions. In each exam the content of the questions will change, but the structure of the questions will remain the same. For the structure (and an example) of the theoretical exam, see the appendix.
+		The quality of the programmer is ultimately determined by his actual code-writing skills, therefore the final grade comes only from the practicums. The quick oral check ensures that each student is able to show that his work is his own and that he has adequate understanding of its mechanisms. The theoretical exam tests that the required foundation of knowledge is also present to avoid away of programming that is exclusively based on intuition, but which is also grounded in concrete and precise knowledge about what each instruction does.
 
 
-\subsection{Practical examination DEV I}
-...
+	\subsection{Theoretical examination DEV I}
+		The general shape of a theoretical exam for \texttt{DEV I} is made up of a series of highly structured open questions. In each exam the content of the questions will change, but the structure of the questions will remain the same. For the structure (and an example) of the theoretical exam, see the appendix.
 
+
+	\subsection{Practical examination DEV I}
+		\paragraph{ASSIGNMENT 1:}
+			The student is asked to implement a simple database for the management of the characters of a hypothetical Massive Multiplayer Online Role Playing Game (MMORPG) in Postgres given the specifications and the relational schema. Besides the student must implement an application that allows the user to subscribe to the game by specifying the user profile data, and execute the operations in the specifications on both his user account and the owned characters in the game.
+
+		\paragraph{ASSIGNMENT 2:}
+			The student is asked to build indices over tables in the Postgres definition of the database for the given schema to optimize the performance of significant queries, and motivate his choices in a written report by analysing performance issues with those queries according to what explained in the theoretical classes.
+
+		\paragraph{ASSIGNMENT 3:}
+			The student must implement a multi-thread version of assignment 1, where the program simulates multiple user starting different transactions to log in to their account and start a game session. The student should write a report about possible conflicts arising from different concurrent transactions trying to access server data.
+
+		\paragraph{ASSIGNMENT 4:}
+			Given a database specification, the student is asked to realise a correspondent graph database model, and implement it in graph DBMS Neo4j. The user application should be able to interface to the database in Neo4j and implement the same functionalities as in Assignment 1.
