@@ -4,9 +4,10 @@
 \usepackage{graphicx}
 \usepackage[space]{grffile}
 \usepackage{listings}
-\lstset{language=C,
+\lstset{language=SQL,
 basicstyle=\ttfamily\footnotesize,
 mathescape=true,
+keywordstyle=\color{blue},
 breaklines=true}
 \usepackage[utf8]{inputenc}
 \usepackage{color}
@@ -116,8 +117,315 @@ Rotterdam, Netherlands}
 \SlideSection{Relational model}
 \SlideSubSection{Overview}
 \begin{slide}{
-\item ---
+\item Halfway between a conceptual model and the physical model.
+\item Contain an abstraction of physical elements.
+\item Can be easily mapped to a physical implementation in a DBMS.
+\item There are mapping rules from E-R model to the relational model.
 }\end{slide}
+
+\SlideSubSection{Relation}
+\begin{slide}{
+\item A relation is a collection of tuples.
+\item Each element of a tuple is a value taken from an attribute set.
+\item Each attribute set is identified by a name
+
+\vspace{0.5cm}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+(38258269, "Battlestar Galactica", 3000, 5000, 1.0)
+}\end{slide}
+
+\SlideSubSection{Keys}
+\begin{slide}{
+\item A \textit{Superkey} is a set of attributes with unique values in each tuple.
+\item A \textit{Candidate key} is the smallest set of attributes which form a superkey.
+
+\vspace{0.5cm}
+\textbf{Example:}\\
+\textbf{Superkey:} (Serial, Name, Shield) \\
+\textbf{Candidate key:} (Serial)
+}\end{slide}
+
+\SlideSubSection{Keys}
+\begin{slide}{
+\item A \textit{Primary key} is the chosen key for a relation among all the candidate keys.
+\item A \textit{Foreign key} is a set of attributes in one relation which is a primary key in another relation.
+
+\vspace{0.5cm}
+\textbf{Example (Foreign key):}\\
+
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{ShipSerial} & \underline{WeaponName} \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\raggedright
+\vspace{0.2cm}
+In the relation \texttt{Mounts} the attribute \texttt{ShipSerial} is a foreign key to \texttt{Ship}.
+
+
+}\end{slide}
+
+\SlideSection{SQL}
+\SlideSubSection{Overview}
+\begin{slide}{
+\item Used to create relations (tables).
+\item Used to insert/modify/extract data from relations (tables).
+\item Declarative language (``What'' not ``How'').
+}\end{slide}
+
+\SlideSubSection{SELECT-FROM}
+\begin{frame}[fragile]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Select all ships from the game}
+\pause
+\begin{lstlisting}
+SELECT *
+FROM Ships
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{SELECT-FROM-WHERE (Selection)}
+\begin{frame}[fragile]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Select all ships in the game whose pilot is ``William Adama''}
+\pause
+\begin{lstlisting}
+SELECT *
+FROM Ships s
+WHERE s.Pilot = 'William Adama'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{SELECT-FROM-WHERE (Projection)}
+\begin{frame}[fragile]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the name of the ships whose pilot is ``Starbucks''}
+\pause
+\begin{lstlisting}
+SELECT s.Name
+FROM Ship s
+where s.Pilot = 'Starbucks'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{JOIN}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{ShipSerial} & \underline{WeaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapon}} \\
+\hline
+\underline{Name} & Damage & Type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the serial of the ships mounting the weapon ``Stealthblade MKII''}
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT s.Serial
+FROM Ship s, Mounts m
+WHERE s.Serial = m.ShipSerial AND 
+      m.WeaponName = 'StealthBlade MKII'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{JOIN (multiple tables)}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{ShipSerial} & \underline{WeaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapon}} \\
+\hline
+\underline{Name} & Damage & Type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the name of all the weapons mounted in the ships flown by ``Apollo''}
+
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT w.Name
+FROM Ship s, Mounts m, Weapon w
+WHERE s.Serial = m.ShipSerial AND 
+      m.WeaponName = w.Name AND
+      s.Pilot = 'Apollo'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{Aggregates (SUM)}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{ShipSerial} & \underline{WeaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapon}} \\
+\hline
+\underline{Name} & Damage & Type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the total damage output of the ships flown by ``Athena''}
+
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT SUM(w.Damage) AS Damage
+FROM Ship s, Mounts m, Weapon w
+WHERE s.Serial = m.ShipSerial AND 
+      m.WeaponName = w.Name AND
+      s.Pilot = 'Athena'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{Aggregates (COUNT, HAVING)}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{Serial} & Name & Shields & Armour & Integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{ShipSerial} & \underline{WeaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapon}} \\
+\hline
+\underline{Name} & Damage & Type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Count all the ships having more than 3 weapons}
+
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT COUNT(*)
+FROM (
+ SELECT COUNT(*) AS ShipCount
+ FROM Ship s, Mounts m, Weapon w
+ WHERE s.Serial = m.ShipSerial AND 
+      m.WeaponName = w.Name
+ GROUP BY s.Serial
+ HAVING COUNT(*) > 3)
+                   
+\end{lstlisting}
+
+\end{frame}
+
+
+
+
 
 
 \end{document}
