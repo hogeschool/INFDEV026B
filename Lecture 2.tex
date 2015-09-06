@@ -243,6 +243,7 @@ Red 3 & (0,2.5,1) & 100 \\
 \begin{slide}{
 \item Consider the query on ships presented in the WHERE slides. Suppose we have a hash table on \texttt{firepower}.
 \item \textbf{How many operations does the selection require?}
+\pause
 \item 1 to access the correct bucket, plus 3 operations to read the query in the same bucket = 4 operations vs 10 of non-indexed implementation.
 }\end{slide}
 
@@ -252,38 +253,34 @@ Red 3 & (0,2.5,1) & 100 \\
 \pause
 \end{itemize}
 \begin{lstlisting}[language = Java]
-for (s : ships)
-  for (p : projectiles)
+for (p : projectiles)
+  for (s : ships)
     if (s.name = p.target &&
         s.position = p.position)
          add <s.name,p.damage> to result
 \end{lstlisting}
 \begin{itemize}
-\item We can index one of the tables and put the indexed query as inner query.
+\item We can index one of the tables and put the indexed query as inner query in the for-loop.
 \end{itemize}
 \end{frame}
 
 \begin{slide}{
-\item \textbf{What is the cost of the join with a hash index on} \texttt{target}\footnote{Assume that the index maps the starting letter of its position in the alphabet order and no collisions}?
+\item \textbf{What is the cost of the join with a hash index on} \texttt{name}\footnote{Assume that the index maps the starting letter of its position in the alphabet order and no collisions}?
 \pause
-\item for each record in \texttt{ships} we need to access the bucket in the other table
-\item The only record which matches is \texttt{'Red 4'}.
-\item We apply the hash function for 9 out of 10 records in the \texttt{ships} table (those which do not match).
-}\end{slide}
-
-\begin{slide}{
-\item We apply the hash function for 1 out of 10 records in the \texttt{ships} table plus we access 3 records in the \texttt{projectile} table. (that which matches).
-\item In total 9 + 3 = 12 operations. If there is no index on \texttt{position} then we have in total 12 + 30 = 42 operations (30 for the non-indexed attribute).
+\item For each record in \texttt{projectile} we need to access the bucket in the other table
+\item The only record which matches in \texttt{ship} is \texttt{'Red 3'}.
+\item We apply the hash function and read the entry in the hash table for 'Red 3'. This means $3 \cdot 2 = 6$ operations to select the ships in both table with the same name.
+\item In total we have 6 + 30 operations = 36 operations (30 for the non-indexed attribute in the condition).
 }\end{slide}
 
 \begin{slide}{
 \item \textbf{What if we also have an index on} \texttt{position}?
 \pause
 \item There is one entity in the \texttt{ships} table which matches the condition.
-\item 9 out of 10 records will not match the condition. So we have only to apply 9 times the hash function.
-\item 1 record matches the condition (for position = (0,2.5,1)) and we access 1 entry in \texttt{projectile}.
-\item We have 9 + 1 = 10 operations. So if we have both an index on \texttt{target} and one in \texttt{position} we need 12 + 10 = 22 operations for the join.
-\item About 1/3 of the operations required to perform the join without an index.
+\item For each record in \texttt{projectiles} we look for a record in \texttt{ships} with the same position.
+\item 2 records mismatch the position and one matches.
+\item Accessing the mismatching records requires 2 operations (we only need to hash the search key to find it is not in the buckets). Accessing the matching record requires 2 operations. In total 4 operations.
+\item With two indices we require only 6 + 4 = 10 operations.
 }\end{slide}
 
 \SlideSubSection{Drawbacks of hash tables}
@@ -314,7 +311,7 @@ for (s : ships)
 \item The keys in the right child are greater than or equal to the keys in the parent.
 }\end{slide}
 
-\begin{frame}{2-3 tree for an index on \texttt{name} of table \texttt{ships}}
+\begin{frame}{2-3 Trees}
 \begin{figure}
 \centering
 \includegraphics[scale=0.3]{img/tree2}
@@ -335,10 +332,10 @@ for (s : ships)
 \item \textbf{What is the cost of the join with a 2-3 tree index on} \texttt{name} in table \texttt{ships} (see the next slide for the index) \footnote{Assume that the index maps the starting letter of its position in the alphabet order}?
 \pause
 \item This time the inner table in the for-loop is \texttt{ships}.
-\item We need to find 'Red 3' three times in the index. This requires to traverse the whole three 3 times, for a total of 9 operations.
-\item We have 9 operations vs the required 30 without indexing.
-\item In total we have 39 operations vs 60 (\texttt{position} is not indexed).
-\item This is a very unlucky case, since the entry is stored in a leaf. Imagine we were looking for "Red 4", we would need just 1 operation to get it.
+\item We need to find 'Red 3' three times in the index. This requires to traverse the whole three 3 times and each time we access the record, for a total of 12 operations.
+\item We have 12 operations vs the required 30 without indexing.
+\item In total we have 42 operations vs 60 (\texttt{position} is not indexed).
+\item This is a very unlucky case, since the entry is stored in a leaf. Imagine we were looking for "Red 4", we would need just 1 operation to get to the correct node.
 }\end{slide}
 
 \begin{frame}{Performance (JOIN)}
@@ -364,7 +361,7 @@ for (s : ships)
 \item The position will not match for 2 out of 3 records in \texttt{projectile}. So we have to traverse 3 nodes in the tree twice for a total of 6 operations.
 \item The last position will match and the entry is stored in the root so we need just 1 operation.
 \item In total we have 7 operations.
-\item With both indices we need 16 vs 60 operations without indices.
+\item With both indices we need 19 vs 60 operations without indices.
 \end{itemize}
 \end{frame}
 
