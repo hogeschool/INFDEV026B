@@ -132,10 +132,12 @@ Number of comparisons: 10
 \item How many comparisons we do at least in a table with R records?
 \pause
 \item \textbf{R comparisons}
+\pause
+\item Selection always requires to scan the entire table.
 }\end{slide}
 
 \SlideSection{SORTING}
-\begin{frame}[fragile]{WHERE}
+\begin{frame}[fragile]{SORTING}
 \begin{itemize}
 \item Sorting and grouping requires to sort the column values.
 \item The best sorting algorithm requires about $R\log R$ operations, where R is the number of records.
@@ -184,10 +186,16 @@ Tantine IV & (4,2.5,0) & 100 \\
 \end{tabular} 
 \end{frame}
 
+\SlideSubSection{JOIN performance}
 \begin{slide}{
 \item How many comparisons does the join make?
 \pause
-\item 30.
+\item Each entity of the first table must be compared.
+\item For each entity of the first table there is a comparison with each entity of the second.
+\item \textbf{Total comparisons: }$10 \cdot 3 = 30$.
+\item How many operations does JOINING two tables, respectively with $N$ and $M$ records, require?
+\pause
+\item $N \cdot M$.
 }\end{slide}
 
 
