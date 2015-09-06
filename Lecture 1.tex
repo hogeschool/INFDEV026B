@@ -58,7 +58,6 @@ Rotterdam, Netherlands}
 
 
 
-\SlideSection{Object-Relation Mapping}
 \SlideSubSection{Sample Code JDBC}
 {
 \begin{lstlisting}[language=java][showstringspaces=false]
@@ -77,7 +76,6 @@ try (Connection conn = DriverManager.getConnection(
 }
 
 
-\SlideSection{Object-Relation Mapping}
 \SlideSubSection{Disadvantages of JDBC}
 \begin{slide}{
 \item Less maintainable code for large projects
@@ -85,7 +83,6 @@ try (Connection conn = DriverManager.getConnection(
 }
 \end{slide}
 
-\SlideSection{Object-Relation Mapping}
 \SlideSubSection{ORM}
 \begin{slide}{
 \item It's a technique for converting data between relational databases and object-oriented programming languages.
@@ -102,7 +99,7 @@ try (Connection conn = DriverManager.getConnection(
 }
 \end{slide}
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{ORM and Data Persistence Pattern}
 \begin{slide}{
 \item There are some pattern designed for persistence of objects in DBS
@@ -115,7 +112,6 @@ try (Connection conn = DriverManager.getConnection(
 \end{itemize}
 }\end{slide}
 
-\SlideSection{Object-Relation Mapping}
 \SlideSubSection{Active Record Pattern (ARP)}
 \begin{slide}{
 \item In ARP there is an object for every table or view that wraps a row
@@ -124,7 +120,7 @@ try (Connection conn = DriverManager.getConnection(
 \item So this object carries both data and behavior 
 }\end{slide}
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Active Record Pattern}
 \begin{slide}{
 \item sample structure of active record 
@@ -132,7 +128,7 @@ try (Connection conn = DriverManager.getConnection(
 \includegraphics[scale=0.7]{img/activeRecordSketch.png}
 }\end{slide}
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Active Record Pattern (ARP)}
 \begin{slide}{
 \item What are the limitations of this pattern regarding objects structure? 
@@ -140,7 +136,7 @@ try (Connection conn = DriverManager.getConnection(
 \item Think of collections and inheritance! 
 }\end{slide}
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Data Mapper Pattern (DMP)}
 \begin{slide}{
 \item In DMP there is a layer of mappers that moves data between objects and a database 
@@ -155,7 +151,7 @@ try (Connection conn = DriverManager.getConnection(
 \end{itemize}
 }\end{slide}
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Data Mapper}
 \begin{slide}{
 \item sample structure of data mapper 
@@ -164,7 +160,7 @@ try (Connection conn = DriverManager.getConnection(
 }\end{slide}
 
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Data Mapper Framework: Hibernate}
 \begin{slide}{
 \item Hibernate implements data mapper pattern
@@ -180,7 +176,7 @@ try (Connection conn = DriverManager.getConnection(
 \end{itemize}
 }\end{slide}
 
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Hibernate}
 \begin{slide}{
 \item sample structure of data mapper 
@@ -304,7 +300,7 @@ Session session = factory.openSession();
    \end{lstlisting} 
 \end{frame}
  
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Java Persistence API}
 \begin{slide}{
 \item Provides the standard specification for managing the relational data in applications
@@ -314,7 +310,7 @@ Session session = factory.openSession();
 }
 \end{slide} 
  
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Java Persistence API}
 \begin{slide}{
 \item Entities
@@ -342,7 +338,7 @@ em.close();
 \end{lstlisting} 
 \end{frame} 
  
-\SlideSection{Object-Relation Mapping}
+
 \SlideSubSection{Lab}
 \begin{slide}{
 \item Check the tables mentioned in les 0
