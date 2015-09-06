@@ -4,6 +4,7 @@
 \usepackage{graphicx}
 \usepackage[space]{grffile}
 \usepackage{listings}
+\usepackage{animate}
 \lstset{language=SQL,
 basicstyle=\ttfamily\footnotesize,
 mathescape=true,
@@ -88,7 +89,7 @@ Rotterdam, Netherlands}
 \begin{lstlisting}
 SELECT name
 FROM ships
-WHERE firepower >= 500
+WHERE firepower = 1500
 \end{lstlisting}
 \tiny
 \begin{tabular}{|c|c|c|c|c|}
@@ -107,7 +108,7 @@ Red 4 & X-Wing & 10 & 300 & (2,2.5,1) \\
 \hline
 Red 5 & X-Wing & 10 & 300 & (2,2.5,0) \\
 \hline
-Red 6 & X-Wing & 10 & 300 & (2,2.5,0) \\
+Red 6 & X-Wing & 10 & 300 & (1,2.5,0) \\
 \hline
 Tantine IV & Corellian Corvette & 60 & 300 & (4,2.5,0) \\
 \hline
@@ -115,7 +116,7 @@ Tyranny & Imperial Star Destroyer & 1500 & 100 & (12,0,0) \\
 \hline
 Accuser & Imperial Star Destroyer & 1500 & 100& (-12,0,0)\\
 \hline
-Bombard & Victory Star Destroyer & 500 & 175 & (-6,1,0)\\
+Bombard & Victory Star Destroyer & 1500 & 175 & (-6,1,0)\\
 \hline
 \end{tabular}
 
@@ -147,8 +148,8 @@ Number of comparisons: 10
 \begin{lstlisting}
 SELECT type
 FROM ships
-WHERE firepower >= 500
-ORDER BY firepower DESC
+WHERE firepower = 500
+ORDER BY name DESC
 \end{lstlisting}
 \end{frame}
 
@@ -177,25 +178,235 @@ WHERE s.position = p.position AND
 \hline
 target & position & damage \\
 \hline
-Tantine IV & (0,1,0) & 30 \\
+Red 3 & (0,1,0) & 30 \\
 \hline
-Tantine IV & (3,1,-2) & 50 \\
+Red 3 & (3,1,-2) & 50 \\
 \hline
-Tantine IV & (4,2.5,0) & 100 \\
+Red 3 & (0,2.5,1) & 100 \\
 \hline
 \end{tabular} 
 \end{frame}
 
 \SlideSubSection{JOIN performance}
 \begin{slide}{
-\item How many comparisons does the join make?
+\item \textbf{How many comparisons does the join make?}
 \pause
 \item Each entity of the first table must be compared.
-\item For each entity of the first table there is a comparison with each entity of the second.
-\item \textbf{Total comparisons: }$10 \cdot 3 = 30$.
-\item How many operations does JOINING two tables, respectively with $N$ and $M$ records, require?
+\item For each entity of the first table there is a comparison with each entity of the second for each selection condition.
+\item \textbf{Total comparisons: }$2 \cdot 10 \cdot 3 = 60$.
+\item \textbf{How many operations does JOINING two tables with one condition, respectively with $N$ and $M$ records, require?}
 \pause
 \item $N \cdot M$.
+\item \textbf{What if there are $C$ conditions?}
+\pause
+\item $C \cdot N \cdot M$.
+}\end{slide}
+
+\SlideSection{Indexing}
+\SlideSubSection{Dictionaries and Indices}
+\begin{slide}{
+\item A \textit{Dictionary} is a collection of \textit{entries}.
+\item An \textit{entry} is a pair $\langle key,value \rangle$.
+\item An index can be thought as a dictionary. The key is the search parameter in the index.
+}\end{slide}
+
+\SlideSection{Hashing}
+\SlideSubSection{Hash table}
+\begin{slide}{
+\item It is an array of \textit{buckets}. Each element of the array is a pointer to a specific bucket.
+\item A \textit{bucket} is an array used to contain data.
+\item Insertion uses a \textit{hash function} to map a key to a position in the array.
+\item The \textit{hash function} always returns a value between 0 and \texttt{array.length - 1}.
+\item Use the hash function to search for a key and go to the corresponding bucket.
+}\end{slide}
+
+\SlideSubSection{Hash table}
+\begin{frame}{Hash table}
+\begin{figure}
+\centering
+\includegraphics[scale=0.25]{img/hash_table}
+\caption{Example of data insertion in a hash table}
+\end{figure}
+\end{frame}
+
+\SlideSubSection{Collisions}
+\begin{slide}{
+\item The hash function might return duplicate values for two different keys, or for duplicate keys.
+\item We add an element to the bucket for each collision.
+\item \textbf{What happens if the bucket is full?} (\textit{overflow})
+\pause
+\item Add a list as overflow bucket. All overflowing entries are stored in the overflow bucket.
+\item Extend the bucket array when needed.
+}\end{slide}
+
+\SlideSubSection{Performance (WHERE)}
+\begin{slide}{
+\item Consider the query on ships presented in the WHERE slides. Suppose we have a hash table on \texttt{firepower}.
+\item \textbf{How many operations does the selection require?}
+\item 1 to access the correct bucket, plus 3 operations to read the query in the same bucket = 4 operations vs 10 of non-indexed implementation.
+}\end{slide}
+
+\begin{frame}[fragile]{Performance (JOIN)}
+\begin{itemize}
+\item \textbf{How can the join be implemented?}
+\pause
+\end{itemize}
+\begin{lstlisting}[language = Java]
+for (s : ships)
+  for (p : projectiles)
+    if (s.name = p.target &&
+        s.position = p.position)
+         add <s.name,p.damage> to result
+\end{lstlisting}
+\begin{itemize}
+\item We can index one of the tables and put the indexed query as inner query.
+\end{itemize}
+\end{frame}
+
+\begin{slide}{
+\item \textbf{What is the cost of the join with a hash index on} \texttt{target}\footnote{Assume that the index maps the starting letter of its position in the alphabet order and no collisions}?
+\pause
+\item for each record in \texttt{ships} we need to access the bucket in the other table
+\item The only record which matches is \texttt{'Red 4'}.
+\item We apply the hash function for 9 out of 10 records in the \texttt{ships} table (those which do not match).
+}\end{slide}
+
+\begin{slide}{
+\item We apply the hash function for 1 out of 10 records in the \texttt{ships} table plus we access 3 records in the \texttt{projectile} table. (that which matches).
+\item In total 9 + 3 = 12 operations. If there is no index on \texttt{position} then we have in total 12 + 30 = 42 operations (30 for the non-indexed attribute).
+}\end{slide}
+
+\begin{slide}{
+\item \textbf{What if we also have an index on} \texttt{position}?
+\pause
+\item There is one entity in the \texttt{ships} table which matches the condition.
+\item 9 out of 10 records will not match the condition. So we have only to apply 9 times the hash function.
+\item 1 record matches the condition (for position = (0,2.5,1)) and we access 1 entry in \texttt{projectile}.
+\item We have 9 + 1 = 10 operations. So if we have both an index on \texttt{target} and one in \texttt{position} we need 12 + 10 = 22 operations for the join.
+\item About 1/3 of the operations required to perform the join without an index.
+}\end{slide}
+
+\SlideSubSection{Drawbacks of hash tables}
+\begin{slide}{
+\item Useless if the condition is not an equality but an inequality (conditions on intervals).
+\item Useless with ordering/grouping commands.
+\item A lot of collisions require to extend the buckets/slow down the search if overflow buckets are used.
+}\end{slide}
+
+\SlideSection{Trees}
+\SlideSubSection{Balanced trees}
+\begin{slide}{
+\item A graph is a set of vertices connected by edges.
+\item A tree is a graph without cycles and connected (all nodes can be reached following connections from a starting node).
+\item The top node is called \texttt{root}.
+\item The nodes that are directly connected to a node and at a deeper level are called children. The children shares the same parent.
+\item A node which does not have children is called \textit{leaf}.
+\item A balanced tree is a tree where the leaves are all at the same level.
+}\end{slide}
+
+\SlideSubSection{2-3 Trees}
+\begin{slide}{
+\item Balanced tree.
+\item Every node contains at most 2 entries
+\item Every node has 2 or 3 children.
+\item The keys in the left child are less than or equal to the keys in the parent.
+\item The keys in the middle child are between the min and the max keys stored in the parent.
+\item The keys in the right child are greater than or equal to the keys in the parent.
+}\end{slide}
+
+\begin{frame}{2-3 tree for an index on \texttt{name} of table \texttt{ships}}
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{img/tree2}
+\caption{Index on \texttt{firepower}}
+\end{figure}
+\end{frame}
+
+\SlideSubSection{Performance (WHERE)}
+\begin{slide}{
+\item Consider the query on ships presented in the WHERE slides. Suppose we have a 2-3 tree index on \texttt{firepower}.
+\item \textbf{How many operations does the selection require?}
+\pause
+\item We follow the index and we find 3 entries, reading 4 nodes. We need 4 operations vs 10 operations without an index.
+}\end{slide}
+
+\SlideSubSection{Performance (JOIN)}
+\begin{slide}{
+\item \textbf{What is the cost of the join with a 2-3 tree index on} \texttt{name} in table \texttt{ships} (see the next slide for the index) \footnote{Assume that the index maps the starting letter of its position in the alphabet order}?
+\pause
+\item This time the inner table in the for-loop is \texttt{ships}.
+\item We need to find 'Red 3' three times in the index. This requires to traverse the whole three 3 times, for a total of 9 operations.
+\item We have 9 operations vs the required 30 without indexing.
+\item In total we have 39 operations vs 60 (\texttt{position} is not indexed).
+\item This is a very unlucky case, since the entry is stored in a leaf. Imagine we were looking for "Red 4", we would need just 1 operation to get it.
+}\end{slide}
+
+\begin{frame}{Performance (JOIN)}
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{img/tree1}
+\caption{Index on \texttt{name}}
+\end{figure}
+\end{frame}
+
+\begin{slide}{
+\item \textbf{Can you guess what is the generalized formula for the number of operations to search for a key in a 2-3 tree?}
+\pause
+\item $\log_{2} N$ where $N$ is the number of entries.
+}\end{slide}
+
+
+
+\begin{frame}{Performance (JOIN)}
+\begin{itemize}
+\item \textbf{What if we also have an index on} \texttt{position} (see the next slide for the index)\footnote{Imagine that the key is generated by summing the components of the position}?
+\pause
+\item The position will not match for 2 out of 3 records in \texttt{projectile}. So we have to traverse 3 nodes in the tree twice for a total of 6 operations.
+\item The last position will match and the entry is stored in the root so we need just 1 operation.
+\item In total we have 7 operations.
+\item With both indices we need 16 vs 60 operations without indices.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Performance (JOIN)}
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{img/tree3}
+\caption{Index on \texttt{position}}
+\end{figure}
+\end{frame}
+
+\SlideSubSection{Ordering/grouping with trees}
+\begin{slide}{
+\item A clustered index is an index where the record order in a file is the same in the index.
+\item If the tree index is clustered we can use the tree for ordering/grouping.
+\item Just traverse the tree. If the ordering is ascending then visit all the nodes starting from the leftmost and then moving to the rightmost.
+\item This requires $N$ steps where $N$ is the number of entries in the index (vs $N \log N$ of a traditional ordering algorithm).
+}\end{slide}
+
+\begin{frame}{Ordering/grouping with trees}
+\textbf{Exercise: order the \texttt{name} attributes in ascending order}.
+\end{frame}
+
+\begin{frame}{Ordering/grouping with trees}
+\textbf{Exercise: order the \texttt{name} attributes in ascending order}.
+\animategraphics[autoplay,loop,scale=0.35]{1}{img/order}{1}{10}
+\end{frame}
+
+\SlideSubSection{Overall evaluation of trees}
+\begin{slide}{
+\item Fast with conditions on intervals.
+\item Fast with ordering/group by.
+\item The worst case requires to scan $\log N$ entries before finding our entries (with Hash tables it is at most the size of the largest bucket).
+}\end{slide}
+
+\SlideSubSection{Golden rules of indexing}
+\begin{slide}{
+\item If most of the queries have selections/joins with equalities choose hash tables.
+\item If most of the queries have selections/joins with inequalities choose trees.
+\item If you can anticipate there will be a lot of mismatches in the comparisons choose hash tables.
+\item If you anticipate there will be a lot of collisions (a lot of duplicate values) choose trees.
+\item If you have a lot of queries with ordering/group by use clustered trees (otherwise do not use clustering).
 }\end{slide}
 
 
