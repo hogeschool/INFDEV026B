@@ -32,9 +32,10 @@ Rotterdam, Netherlands}
 \SlideSection{Introduction}
 \SlideSubSection{Lecture topics}
 \begin{slide}{
+\item Recap Java Database Connectivity  
 \item Object-Relation Mapping.
-\item Setting up Postgres.
-\item Setting up hibernate.
+\item Java Persistence API
+\item Setting up JPA with EclipseLink.
 }\end{slide}
 
 
@@ -85,61 +86,63 @@ try (Connection conn = DriverManager.getConnection(
 
 \SlideSubSection{ORM}
 \begin{slide}{
-\item It's a technique for converting data between relational databases and object-oriented programming languages.
+\item It's a technique to map object state to the database columns
 \pause
 \item Hides details of SQL queries from OO logic.
-\pause
-\item Based on JDBC 'under the hood'.
 \pause 
-\item Maps Java POJOs (plain old java objects) to relational databases
+\item It provides a way for data conversion between incompatible type systems 
 \pause 
 \item Portability: DB independent
 \pause 
-\item Performance: Object and query caching mechanism 
+\item Performance: Object and query caching mechanism   
 }
 \end{slide}
 
 
-\SlideSubSection{ORM and Data Persistence Pattern}
+\SlideSubSection{ORM and Data Persistence Strategies}
 \begin{slide}{
-\item There are some pattern designed for persistence of objects in DBS
-\item ORM framework are based on design patterns and framework specific implementations
-\item Only two data persistence pattern will be discussed in this lecture
+\item There are some strategies designed for persistence of objects
+\item ORM framework are based on those strategies (also called pattern) and framework specific implementations
+\item Only two data persistence strategies will be discussed in this lecture
 \pause 
 \begin{itemize}
-\item Active record pattern
-\item Data mapper
+\item Active record
+\item Data mapper 
 \end{itemize}
 }\end{slide}
 
-\SlideSubSection{Active Record Pattern (ARP)}
+\SlideSubSection{Active Record Strategy}
 \begin{slide}{
-\item In ARP there is an object for every table or view that wraps a row
+\item In this strategy there is an object for every table or view that wraps a row
+\pause
+\item Objects structures are tightly coupled to the relational schema
+\pause
 \item This object encapsulates the database access, and adds domain logic on that data
 \pause
 \item So this object carries both data and behavior 
+
 }\end{slide}
 
 
-\SlideSubSection{Active Record Pattern}
+\SlideSubSection{Active Record Strategy}
 \begin{slide}{
 \item sample structure of active record 
 \\
-\includegraphics[scale=0.7]{img/activeRecordSketch.png}
+\includegraphics[scale=0.3]{img/activeRecordSketch.png}
 }\end{slide}
 
 
-\SlideSubSection{Active Record Pattern (ARP)}
+\SlideSubSection{Active Record Strategy}
 \begin{slide}{
 \item What are the limitations of this pattern regarding objects structure? 
 \pause
-\item Think of collections and inheritance! 
+\item Think of domain object models that are distinguish from the one of the database schema
 }\end{slide}
 
 
-\SlideSubSection{Data Mapper Pattern (DMP)}
+\SlideSubSection{Data Mapper Strategy}
 \begin{slide}{
-\item In DMP there is a layer of mappers that moves data between objects and a database 
+\item In strategy there is a layer of mappers that moves data between objects and a database 
 \item This layer keeps both in-memory objects and database independent from each others 
 \item The reasons for this are:
 \pause
@@ -156,105 +159,21 @@ try (Connection conn = DriverManager.getConnection(
 \begin{slide}{
 \item sample structure of data mapper 
 \\
-\includegraphics[scale=0.5]{img/databaseMapperSketch.png}
+\includegraphics[scale=0.4]{img/databaseMapperSketch.png}
 }\end{slide}
 
 
 
-\SlideSubSection{Data Mapper Framework: Hibernate}
+\SlideSubSection{Java Persistence API}
 \begin{slide}{
-\item Hibernate implements data mapper pattern
-\item Components of Hibernate : 	
-\begin{itemize}
-\item Configuration file for the settings: hibernate.cfg.xml 
-\pause
-\item Mapping files for each entity: Entity.hbm.xml OR
-\pause 
-\item Annotiation in the POJO-files (@keyword in java files)
-\pause
-\item Hibernate Query Language (HQL) is an object-oriented query language
-\end{itemize}
-}\end{slide}
-
-
-\SlideSubSection{Hibernate}
-\begin{slide}{
-\item sample structure of data mapper 
+\item Provides the standard specification for managing the relational data in applications
+\item JPA is a layer between third party ORM implementations (EclipseLink or Hibernate) and the application 
+\item It uses persistence annotations at three different levels: class, method, and field
 \\
-\includegraphics[scale=0.5]{img/Hibernate.jpg}
-}\end{slide}
+\includegraphics[scale=0.3]{img/JPA.png}
+}
+\end{slide} 
 
-\begin{frame}[fragile]
-Example of Hibernate configuration file 
-\begin{lstlisting}[language=XML]
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE hibernate-configuration SYSTEM 
-"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-
-<hibernate-configuration>
-   <session-factory>
-   <property name="hibernate.dialect">
-      org.hibernate.dialect.PostgresSQLDialect
-   </property>
-   <property name="hibernate.connection.driver_class">
-      com.postgres.jdbc.Driver
-   </property>
-
-   <!-- Assume test is the database name -->
-   <property name="hibernate.connection.url">
-      jdbc:mysql://localhost/test
-   </property>
-   <property name="hibernate.connection.username">
-      root
-   </property>
-   <property name="hibernate.connection.password">
-      root123
-   </property>
-   !-- List of XML mapping files -->
-      <mapping resource="ships.hbm.xml"/>
-
-   </session-factory>
-   </hibernate-configuration>
-\end{lstlisting}
-\end{frame}
-
-\begin{frame}[fragile]
-POJO sample for Ships 
-\begin{lstlisting}
-public class Ships {
-   private int serial;
-   private String name; 
-   private String armour;   
-   ...
-  public Ships() {}
-   ...  
-  }
- \end{lstlisting} 
-\end{frame}
-
-\begin{frame}[fragile]
-Example of a mapping file in Hibernate
-\begin{lstlisting}[language=XML]
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC 
- "-//Hibernate/Hibernate Mapping DTD//EN"
- "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
-
-<hibernate-mapping>
-   <class name="Ships" table="Ships">
-      <meta attribute="class-description">
-         This class contains the employee detail. 
-      </meta>
-      <id name="serial" type="int" column="serial">
-         <generator class="native"/>
-      </id>
-      <property name="serial" column="serial" type="integer"/>
-      <property name="name" column="name" type="string"/>
-      <property name="armour" column="armour" type="integer"/>
-   </class>
-</hibernate-mapping>
-\end{lstlisting} 
-\end{frame}
 
 \begin{frame}[fragile]
 Example of using annotation instead of mapping files 
@@ -275,61 +194,23 @@ public class Ships {
    private String armour; 
 
    public Employee() {}
+   
+   ...
    \end{lstlisting} 
 \end{frame}
 
-\begin{frame}[fragile]
-Sample code for persisting a new ship in Hibernate 
-\begin{lstlisting}[language=java]
-....	
-Session session = factory.openSession();
-      Transaction tx = null;
-      Integer shipId = null;
-      try{
-         tx = session.beginTransaction();
-         Ships s = new Ships("walle","metal armour");
-         shipId = (Integer) session.save(Ships); 
-         tx.commit();
-      }catch (HibernateException e) {
-         if (tx!=null) tx.rollback();
-         e.printStackTrace(); 
-      }finally {
-         session.close(); 
-      }
-....
-   \end{lstlisting} 
-\end{frame}
- 
-
-\SlideSubSection{Java Persistence API}
-\begin{slide}{
-\item Provides the standard specification for managing the relational data in applications
-\item JPA is a layer between third party ORM like Hibernate and the application 
-\\
-\includegraphics[scale=0.3]{img/JPA.png}
-}
-\end{slide} 
- 
-
-\SlideSubSection{Java Persistence API}
-\begin{slide}{
-\item Entities
-\item EntityManager
-\item Persistence Units
-\item JPA Query Language
-}
-\end{slide}  
 
 \begin{frame}[fragile]
 Sample code for persisting a new ship in JPA with Hibernate 
 \begin{lstlisting}[language=java]
 ....	 
+Ships s = new Ships("walle","metal armour");
+....
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("InfDev5PU");
-//create a session in case of Hibernate
+//create a session object in case of Hibernate
 EntityManager em = emf.createEntityManager();
 //starts a transaction 
 em.getTransaction().begin();
-Ships s = new Ships("walle","metal armour");
 //calls the save method of Hibernate
 em.persist(em);
 em.getTransaction().commit();
@@ -339,12 +220,22 @@ em.close();
 \end{frame} 
  
 
+\SlideSubSection{Mapping Tables and Relationships in ORM}
+\begin{slide}{
+\item Mapping Simple Types like primitive java types: byte, int, short, etc.
+\item Mapping relationships
+\item Mapping ...
+\item \red{TODO}
+
+}
+\end{slide}  
+
 \SlideSubSection{Lab}
 \begin{slide}{
 \item Check the tables mentioned in les 0
 \item Create these tables in Postgres
-\item Insert new data into the database using Hibernate	
-	}
-\end{slide}
+\item Insert some new data into the database using JPA	
+\item Print these data in your terminal using a named query 
+}\end{slide}
 
 \end{document}
