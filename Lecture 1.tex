@@ -94,7 +94,14 @@ try (Connection conn = DriverManager.getConnection(
 \pause 
 \item Portability: DB independent
 \pause 
-\item Performance: Object and query caching mechanism   
+\item Performance: Object and query caching mechanism  
+\pause 
+\item ORM are not only related to Java, other languages provide this technique
+\begin{itemize}
+\item C\#: Linq or Entity-Framework
+\item Ruby: Active Record
+\item Java Hibernate, EclipseLink
+\end{itemize}
 }
 \end{slide}
 
@@ -204,7 +211,7 @@ public class Ships {
 Sample code for persisting a new ship in JPA with Hibernate 
 \begin{lstlisting}[language=java]
 ....	 
-Ships s = new Ships("walle","metal armour");
+Ships s = new Ships("Some ship name","metal");
 ....
 EntityManagerFactory emf = Persistence.createEntityManagerFactory("InfDev5PU");
 //create a session object in case of Hibernate
@@ -223,10 +230,14 @@ em.close();
 \SlideSubSection{Mapping Tables and Relationships in ORM}
 \begin{slide}{
 \item Mapping Simple Types like primitive java types: byte, int, short, etc.
-\item Mapping relationships
-\item Mapping ...
-\item \red{TODO}
-
+\item Mapping tables to entity classes.
+\item Mapping relationships: 
+\begin{itemize}
+\item In entity-classes the many-side of a relation can be mapped as Collections, Lists, Maps and Sets
+\item It depends on the requirements within your application
+\item Two entities cannot share a reference to the same collection instance  
+\item There are special annotations (ex. @OneToMany) to support mappings
+\end{itemize} 
 }
 \end{slide}  
 

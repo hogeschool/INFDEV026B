@@ -117,7 +117,7 @@ Rotterdam, Netherlands}
 \begin{slide}{
 \item A way to uniquely identify an entity.
 \item A key is a set of attributes that have unique values among entities.
-\item \textbf{Starship:} Serial number.
+\item \textbf{Starship:} id number.
 
 %insert picture here
 }\end{slide}
@@ -151,7 +151,7 @@ Rotterdam, Netherlands}
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -166,8 +166,8 @@ Rotterdam, Netherlands}
 
 \vspace{0.5cm}
 \textbf{Example:}\\
-\textbf{Primary key:} (Serial, Name, Shield) \\
-\textbf{Candidate key:} (Serial)
+\textbf{Primary key:} (id, name, shield) \\
+\textbf{Candidate key:} (id)
 }\end{slide}
 
 \SlideSubSection{Keys}
@@ -183,7 +183,7 @@ Rotterdam, Netherlands}
 \hline
 \multicolumn{2}{|c|}{\textbf{Mounts}} \\
 \hline
-\underline{shipSerial} & \underline{weaponName} \\
+\underline{shipid} & \underline{weaponName} \\
 \hline
 \end{tabular}
 
@@ -192,13 +192,13 @@ Rotterdam, Netherlands}
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
 \raggedright
 \vspace{0.2cm}
-In the relation \texttt{Mounts} the attribute \texttt{shipSerial} is a foreign key to \texttt{Ship}.
+In the relation \texttt{Mounts} the attribute \texttt{shipid} is a foreign key to \texttt{Ships}.
 
 
 }\end{slide}
@@ -217,7 +217,7 @@ In the relation \texttt{Mounts} the attribute \texttt{shipSerial} is a foreign k
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -237,7 +237,7 @@ FROM Ships
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -258,7 +258,7 @@ WHERE s.pilot = 'William Adama'
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -280,7 +280,7 @@ where s.pilot = 'Starbucks'
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -288,7 +288,7 @@ where s.pilot = 'Starbucks'
 \hline
 \multicolumn{2}{|c|}{\textbf{Mounts}} \\
 \hline
-\underline{shipSerial} & \underline{weaponName} \\
+\underline{shipid} & \underline{weaponName} \\
 \hline
 \end{tabular}
 
@@ -301,12 +301,12 @@ where s.pilot = 'Starbucks'
 \end{tabular}
 
 \vspace{0.25cm}
-\textbf{Find the serial of the ships mounting the weapon ``Stealthblade MKII''}
+\textbf{Find the id of the ships mounting the weapon ``Stealthblade MKII''}
 \pause
 \begin{lstlisting}[showstringspaces=false]
-SELECT s.serial
+SELECT s.id
 FROM Ship s, Mounts m
-WHERE s.serial = m.shipSerial AND 
+WHERE s.id = m.shipid AND 
       m.weaponName = 'StealthBlade MKII'
 \end{lstlisting}
 
@@ -319,7 +319,7 @@ WHERE s.serial = m.shipSerial AND
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -327,7 +327,7 @@ WHERE s.serial = m.shipSerial AND
 \hline
 \multicolumn{2}{|c|}{\textbf{Mounts}} \\
 \hline
-\underline{shipSerial} & \underline{weaponName} \\
+\underline{shipid} & \underline{weaponName} \\
 \hline
 \end{tabular}
 
@@ -346,7 +346,7 @@ WHERE s.serial = m.shipSerial AND
 \begin{lstlisting}[showstringspaces=false]
 SELECT w.name
 FROM Ship s, Mounts m, Weapon w
-WHERE s.Serial = m.ShipSerial AND 
+WHERE s.id = m.Shipid AND 
       m.weaponName = w.name AND
       s.pilot = 'Apollo'
 \end{lstlisting}
@@ -360,7 +360,7 @@ WHERE s.Serial = m.ShipSerial AND
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -368,7 +368,7 @@ WHERE s.Serial = m.ShipSerial AND
 \hline
 \multicolumn{2}{|c|}{\textbf{Mounts}} \\
 \hline
-\underline{shipSerial} & \underline{weaponName} \\
+\underline{shipid} & \underline{weaponName} \\
 \hline
 \end{tabular}
 
@@ -387,7 +387,7 @@ WHERE s.Serial = m.ShipSerial AND
 \begin{lstlisting}[showstringspaces=false]
 SELECT SUM(w.damage) AS damage
 FROM Ship s, Mounts m, Weapon w
-WHERE s.derial = m.shipSerial AND 
+WHERE s.id = m.shipid AND 
       m.weaponName = w.name AND
       s.pilot = 'Athena'
 \end{lstlisting}
@@ -401,7 +401,7 @@ WHERE s.derial = m.shipSerial AND
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{serial} & name & shields & armour & integrity \\
+\underline{id} & name & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -409,7 +409,7 @@ WHERE s.derial = m.shipSerial AND
 \hline
 \multicolumn{2}{|c|}{\textbf{Mounts}} \\
 \hline
-\underline{shipSerial} & \underline{weaponName} \\
+\underline{shipid} & \underline{weaponName} \\
 \hline
 \end{tabular}
 
@@ -430,9 +430,9 @@ SELECT COUNT(*)
 FROM (
  SELECT COUNT(*) AS ShipCount
  FROM Ship s, Mounts m, Weapon w
- WHERE s.serial = m.shipSerial AND 
+ WHERE s.id = m.shipid AND 
       m.weaponName = w.Name
- GROUP BY s.serial
+ GROUP BY s.id
  HAVING COUNT(*) > 3)
                    
 \end{lstlisting}
