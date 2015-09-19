@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{enumitem}
 \usepackage{ulem}
 \usepackage[official]{eurosym}
 \title{Advanced Databases \& noSQL (INFDEV03-5) \\ Assignment 1}
@@ -10,6 +11,15 @@
 \date { }
 \begin{document}
 \maketitle
+
+\section*{Instructions}
+\begin{itemize}[noitemsep]
+\item The assignment must be submitted within Friday of Week 5.
+\item The assignment must be implemented using Java with Eclipselink ORM.
+\item Not delivering the assignment in time implies taking the exam at the retake.
+\end{itemize}
+
+\section*{Assignment}
 
 This assignment consists in defining a database to record user data for a \textit{Massive Multiplayer Online Role Playing Game} (MMORPG) and to build a small application for the user to subscribe and log in. When a user wants to register to the server he is asked to pick a \underline{unique} user name. The system allows the user to recharge money from his bank account which are stored in the database as \texttt{Balance}. The user can use his money to pay the subscription. The minimum subscription is one month for 5\euro{}, two months for 8\euro{}, three months for 10\euro{}, and 35\euro{} for a whole year. The system stores the name, surname, IBAN, the date of the last payment, the months bought with the last payment, the character slots, the login password, and whether the use was banned from the game. Money can be used also to unlock additional slots for characters (see below). A player receives 5 character slots with the subscription, and can buy additional slots for 1\euro{} each.
 
