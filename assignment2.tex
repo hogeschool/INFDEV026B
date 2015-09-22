@@ -1,0 +1,42 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{ulem}
+\usepackage[official]{eurosym}
+\title{Advanced Databases \& noSQL (INFDEV03-5) \\ Assignment 2}
+\author { }
+\date { }
+\begin{document}
+\maketitle
+
+\section*{Instructions}
+\begin{itemize}[noitemsep]
+\item The assignment must be submitted within Friday of Week 5.
+\item The assignment must be implemented using Java with Eclipselink ORM.
+\item Not delivering the assignment in time implies taking the exam at the retake.
+\end{itemize}
+
+\section*{Assignment}
+The assignment must use indexing to improve the performance of significant queries implemented in Assignment 1. For each class mapped to a database table you should implement a method to randomly generate rows. These rows will be inserted into the database to create a test data set to evaluate the performance of the database. Insert at least 1000 records for each table.
+
+You will need to optimize at least the character management queries and the registration phase queries, and create the optimal index in PostgreSQL (Hash table or Tree) with the techniques seen in class. In case of multiple possible choices compare the performance by using both indexing techniques.
+
+You must hand in the updated project with the application code a report that follows the template below, for each optimized query:
+
+\vspace{0.5cm}
+\begin{tabular}{|c|p{7.5cm}|}
+	\hline
+	\textbf{Optimized Query} & In this section you have to report the SQL code of the query you want to optimize. \\
+	\hline
+	\textbf{Index Statement} & Insert the PostgreSQL statement to create an index for columns in this query. If you need to use clustering, then provide also the command to create the clustered index. \\
+	\hline
+	\textbf{Execution Time} & In this section build a table containing the execution times containing a column for the number of records contained in the test set of the table, the execution time without indexing, and the execution time with the index. If the choice of the indexing technique is ambiguous, then report the execution time of both indexing techniques. Run at least 10 tests, providing the data for each run, and finally write the average of each time at the end. \\
+	\hline
+	\textbf{Motivation for the chosen index} & Here you should motivate your choice based on the query structure and the measured execution times. \\
+	\hline
+\end{tabular}
+
+\end{document}
