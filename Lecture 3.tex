@@ -1,0 +1,169 @@
+\documentclass{beamer}
+\usetheme[hideothersubsections]{HRTheme}
+\usepackage{beamerthemeHRTheme}
+\usepackage{graphicx}
+\usepackage[space]{grffile}
+\usepackage{listings}
+\usepackage{animate}
+\lstset{language=SQL,
+basicstyle=\ttfamily\footnotesize,
+mathescape=true,
+keywordstyle=\color{blue},
+breaklines=true,
+showspaces=false,
+showstringspaces=false}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\newcommand{\red}[1]{
+\textcolor{red}{#1}
+}
+\newcommand{\ts}{\textbackslash}
+
+\title{ACID, Transaction Management and Conccurrency Control }
+
+\author{ }
+
+\institute{Hogeschool Rotterdam \\ 
+Rotterdam, Netherlands}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\SlideSection{Introduction}
+\SlideSubSection{Lecture topics}
+\begin{slide}{
+\item ACID.
+\item Transaction Management.
+\item Concurrency Control.
+}\end{slide}
+
+\SlideSection{Transactions and Concurrency}
+\SlideSubSection{Reasons}
+\begin{slide}{
+\item \emph{Concurrent} execution of user programs is essential for good DBMS performance.
+Because disk accesses are frequent, and relatively slow, it is important to keep the cpu busy by working on several user programs concurrently.
+\item A user’s program may carry out many operations on the data retrieved from the database, but the DBMS is only concerned about what data is read/written from/to the database.
+\item A \emph{transaction} is the DBMS’s abstract view of a user program:  a sequence of \red{reads} and \red{writes}.
+}\end{slide}
+
+
+\SlideSubSection{Transactions and Concurrency}
+\begin{slide}{
+\item Users submit transactions, and can think of each transaction as executing by itself.
+\begin{itemize}
+	\item \emph{Concurrency} is achieved by the DBMS, which interleaves actions (reads/writes of DB objects) of various transactions.
+	\item transaction must leave the database in a consistent state if the DB is consistent when the transaction begins.
+	\item Beyond this, the DBMS does not really understand the semantics of the data.  (e.g., it does not understand how the interest on a bank account is computed).	
+\end{itemize}
+\item Issues:  Effect of interleaving transactions, and crashes.
+}\end{slide}
+
+\SlideSubSection{The ACID properties }
+\begin{slide}{
+\item A RDBS ensures this four properties of a transaction:
+\begin{itemize}
+	\item Atomicity: states that database modifications must follow an all or nothing rule.
+	\pause
+	\item Consistency: states that only valid data will be written to the database.
+	\pause
+	\item Isolation: requires that multiple transactions occurring at the same time not impact each others execution.
+	\pause
+	\item Durability: ensures that any transaction committed to the database will not be lost. 	
+\end{itemize}
+}\end{slide}
+
+\SlideSubSection{Atomicity of Transactions}
+\begin{slide}{
+\item A transaction might \red{commit} after completing all its actions, or it could \red{abort} (or be aborted by the DBMS) after executing some actions.
+\item A very important property guaranteed by the DBMS for all transactions is that they are atomic.  That is, a user can think of a transaction as always executing all its actions in one step, or not executing any actions at all.
+\item DBMS logs all actions so that it can undo the actions of aborted transactions.		
+}\end{slide}
+
+\SlideSection{Example of a Transaction}
+\begin{frame}[fragile]{Transaction}
+\begin{lstlisting}
+BEGIN;
+UPDATE ships SET name = 'Alpha'
+	WHERE name = 'Oleg';
+SAVEPOINT my_savepoint;
+UPDATE ships SET integrity = 30
+	WHERE name = 'Alpha';
+-- oops ... forget to update also Beta 
+ROLLBACK TO my_savepoint;
+UPDATE ships SET integrity = integrity + 10
+	WHERE name = 'Beta';
+COMMIT;		
+\end{lstlisting}
+\red{When are those updates valid states for other actions?}  
+\end{frame}	
+
+
+\SlideSubSection{Transactions}
+\begin{slide}{
+\item We simplify transaction queries for readability in our next example  
+\pause
+\item Consider those two transactions:
+\begin{itemize}
+	\item T1:	BEGIN   A=A+100,   B=B-100   END
+	\item T2:	BEGIN   A=1.06*A,   B=1.06*B   END
+	
+\end{itemize}
+\item The first transaction is transferring \$100 from B’s account to A’s account.  The second is crediting both accounts with a 6\% interest payment.
+\item \red{How are those transaction scheduled?}	
+}\end{slide}
+
+
+\SlideSubSection{Transactions}
+\begin{slide}{
+\item possibility one 
+\begin{itemize}
+	\item T1:A=A+100,\hspace{2cm}B=B-100   
+	\item T2:\hspace{2cm} A=1.06*A,\hspace{2cm}B=1.06*B
+\end{itemize}
+\item possibility two
+\begin{itemize}
+	\item T1:A=A+100,\hspace{4cm}B=B-100   
+	\item T2:\hspace{2cm}A=1.06*A, B=1.06*B
+\end{itemize}
+\item The DBMS’s view of the second schedule:
+\begin{itemize}
+	\item T1:R(A),W(A),\hspace{4cm}   		     	       R(B), W(B)
+	\item T2:\hspace{2cm}R(A), W(A), R(B), W(B)
+\end{itemize}
+\red{R(A): read A, W(A): write A}
+}\end{slide}
+
+
+\end{document}
+
+\begin{slide}{
+\item ...
+}\end{slide}
+
+\begin{frame}[fragile]
+\begin{lstlisting}
+...
+\end{lstlisting}
+\end{frame}
+
+\begin{tabular}{|c|c|c|}
+	\hline
+	\multicolumn{3}{|c|}{\textbf{Projectiles}} \\
+	\hline
+	target & position & damage \\
+	\hline
+	Red 3 & (0,1,0) & 30 \\
+	\hline
+	Red 3 & (3,1,-2) & 50 \\
+	\hline
+	Red 3 & (0,2.5,1) & 100 \\
+	\hline
+\end{tabular} 
+\begin{lstlisting}
+SELECT s.name,p.damage
+FROM ships s,projectiles p
+WHERE s.position = p.position AND
+s.name = p.target
+\end{lstlisting}
