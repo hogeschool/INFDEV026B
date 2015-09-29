@@ -503,7 +503,182 @@ COMMIT;
 	\end{lstlisting}
 	
 \end{frame}
+
+\SlideSubSection{Deadlocks}
+\begin{slide}{
+	\item Consider this interleaved schedule
+	\begin{table}
+		\tiny
+		\begin{tabular}{l|l}
+			T1 & T2 \\
+			\hline
+			W(A) & \\
+			& W(B) \\
+			W(B) & \\
+			& W(A) \\
+			& Commit \\
+			Commit & \\
+		\end{tabular}
+	\end{table}	
+	\item A strict 2PL schedule is the following:
+	\begin{table}
+		\tiny
+		\begin{tabular}{l|l}
+			T1 & T2 \\
+			\hline
+			X(A) & \\
+			W(A) & \\
+			& X(B) \\
+			& W(B) \\
+			WaitLock(B) & \\
+			& WaitLock(A)\\
+			Oh noes! A deadlock! & \\
+		\end{tabular}
+	\end{table}
+	\item Both transaction are stuck waiting for the other lock to be released.
+	\item This phenomenon is called \textit{deadlock}.
+}\end{slide}
+
+\SlideSubSection{Deadlock prevention}
+\begin{slide}{
+	\item Build a graph where each node is mapped to a transaction
+	\item An arrow starts from T1 and points to T2 if T1 is waiting for a lock to be released by T2.
+	\item If we have a cycle in such graph then there is a deadlock.
+	\item The DBMS scheduler aborts transactions involved in a deadlock to free their locks.
+	\begin{figure}
+		\includegraphics[scale=0.2]{img/wait_graph}
+		\caption{Wait graph with a deadlock.}
+	\end{figure}
+}\end{slide}
+
+\SlideSection{Tasks}
+\SlideSubSection{Task 1}
+\begin{slide}{
+	\item List all the possible conflicts arising in the transaction schedule below.
+	\item Convert the schedule into an equivalent strict 2PL schedule.
+	\begin{table}
+		\tiny
+		\begin{tabular}{l|l}
+			T1 & T2\\
+			\hline
+			R(A) & \\
+			R(C) & \\
+			W(C) & \\
+			& R(B) \\
+			& W(B) \\
+			& R(C) \\
+			& W(C) \\
+			Commit & \\
+			& Commit \\		
+		\end{tabular}
+	\end{table}	
 	
+}\end{slide}
+
+\SlideSubSection{Solution}
+\begin{slide}{
+	\item The only conflict is a dirty read on C in T2.
+	\begin{table}
+		\tiny
+		\begin{tabular}{l|l}
+			T1 & T2\\
+			\hline
+			S(A) & \\
+			R(A) & \\
+			X(C) & \\
+			R(C) & \\
+			W(C) & \\
+			& X(B) \\
+			& R(B) \\
+			& W(B) \\
+			& WaitLock(C) \\
+			Commit & \\
+			Unlock(A) & \\
+			Unlock(C) & \\
+			& X(C) \\
+			& R(C) \\
+		 	& W(C) \\
+			& Commit \\
+			& Unlock(B) \\
+			& Unlock(C) \\	
+		\end{tabular}
+	\end{table}	
+}\end{slide}
+
+\SlideSubSection{Task 2}
+\begin{slide}{
+	\item List all the possible conflicts arising in the transaction schedule below.
+	\item Convert the schedule into an equivalent strict 2PL schedule.
+	\begin{table}
+		\tiny
+		\begin{tabular}{l|l|l}
+			T1 & T2 & T3\\
+			\hline
+			W(A) & & \\
+			& R(A) & \\
+			& W(A) & \\
+			& W(B) & \\
+			& Commit & \\
+			& & W(A) \\
+			& & R(B) \\
+			& & W(C) \\
+			W(B) & & \\
+			Commit & & \\
+			& & R(C) \\
+			& & W(A) \\
+			& & Commit\\	
+		\end{tabular}
+	\end{table}	
+	
+}\end{slide}
+
+\SlideSubSection{Solution}
+\begin{slide}{
+	\item There is a dirty read conflict on A between T1 and T2.
+	\item There is a lost updated conflict on A between T1 and T3.
+	\item There is an unrepeatable read conflict on B between T3 and T1.
+	\item Note that there is NO dirty read conflict on B between T2 and T3 because T2 commits before T3 reads B.
+}\end{slide}
+
+\SlideSubSection{Solution}
+\begin{frame}[fragile]{Tasks}
+	\begin{table}
+		\tiny
+		\begin{tabular}{l|l|l}
+			T1 & T2 & T3\\
+			\hline
+			X(A) & & \\
+			W(A) & & \\
+			& WaitLock(A) &\\
+			& & WaitLock(A) \\
+			X(B) & & \\
+			W(B) & & \\
+			Commit & & \\
+			Unlock(A) & & \\
+			Unlock(B) & & \\
+			& X(A) & \\
+			& R(A) & \\
+			& W(A) & \\
+			& X(B) & \\
+			& W(B) & \\
+			& Commit & \\
+			& Unlock(A) & \\
+			& Unlock(B) & \\
+			& & X(A) \\
+			& & W(A) \\
+			& & S(B) \\
+			& & R(B) \\
+			& & X(C) \\
+			& & W(C) \\
+			& & R(C) \\
+			& & W(A) \\
+			& & Commit\\
+			& & Unlock(A) \\
+			& & Unlock(B) \\
+			& & Unlock(C) \\	
+		\end{tabular}
+	\end{table}	
+\end{frame}	
 	
 
 \end{document}
