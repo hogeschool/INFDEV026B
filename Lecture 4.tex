@@ -393,10 +393,6 @@ Rotterdam, Netherlands}
 			\hline
 			7 & Update & T2 & D & 1 & 3 \\
 			\hline
-			8 & Commit & T2 & \multicolumn{3}{}{} \\
-			\cline{1-3}
-			9 & End & T2 & \multicolumn{3}{}{} \\
-			\hline
 			\multicolumn{6}{|c|}{Crash, restart} \\
 			\hline
 		\end{tabular}
@@ -424,10 +420,6 @@ Rotterdam, Netherlands}
 			\hline
 			7 & T2 & 7 & P \\
 			\hline
-			8 & T2 & 8 & C \\
-			\hline
-			9 & \multicolumn{3}{|c|}{Empty} \\
-			\hline
 		\end{tabular}
 	\end{table}
 	
@@ -442,7 +434,7 @@ Rotterdam, Netherlands}
 			\multirow{2}{*}{4 - 9} & A & 0 \\
 			& B & 1 \\
 			\hline
-			\multirow{2}{*}{6 - 9} & A & 0 \\
+			\multirow{2}{*}{6 - 7} & A & 0 \\
 			& B & 1 \\
 			& C & 6 \\
 			& D & 7 \\
@@ -502,10 +494,8 @@ Rotterdam, Netherlands}
 	\item Given the log used in the analysis phase and the generated tables, determine the log from which the redo phase start and what operations are affected. Motivate the answer.
 		
 	\vspace{1cm}
-	\item The smallest RecLSN = 0.
-	\item The update on A is redone because SLN <= RecLSN/
-	\item The update on B is redone, same reason.
-	\item The update on C is redone, same reason.
+	\item The smallest RecLSN = 6.
+	\item The update on C is redone, because SLN $\leq$ RecLSN.
 	\item The update on D is redone, same reason.	
 }\end{slide}
 
