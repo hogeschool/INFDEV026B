@@ -501,19 +501,16 @@ Rotterdam, Netherlands}
 
 \SlideSubSection{Undo Phase}
 \begin{slide}{
-	\item Set ToUndo to be an empty set.
-	\item Find the largest LastLSN among the transactions and store it into ToUndo.
-	\item Repeat the following steps until ToUndo is empty:
-	\item If the action is an update:
+	\item Start from the transaction with largest LastLSN.
+	\item For each transaction do the following
 	\begin{itemize}
 		\item Write a CLR setting NextLSN to the LSN of the action of the operation on this transaction before this log record.
 		\item If it does not exist, set it to \texttt{null}.
-		\item Add this value to ToUndo.
-		\item Undo the operation. 
+		\item Undo the operation.
 	\end{itemize} 
 	\item If the action is a CLR:
 		\begin{itemize}
-			\item if NextSLN is not \texttt{null}, add this value to ToUndo.
+			\item if NextSLN is not \texttt{null}, repeat the undo on that operation.
 			\item if it is \texttt{null} add an end record for the transaction because it has completely undone.
 		\end{itemize}
 }\end{slide}
@@ -528,7 +525,6 @@ Rotterdam, Netherlands}
 \SlideSubSection{Assignment}
 \begin{slide}{
 	\item Using the log and the tables built in the analysis phase, write an updated log by inserting the appropriate CLR added during the Undo phase.
-	\item Keep track of the ToUndo set of LSN.
 }\end{slide}
 
 
