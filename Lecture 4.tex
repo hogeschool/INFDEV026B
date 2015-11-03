@@ -412,13 +412,13 @@ Rotterdam, Netherlands}
 			\textbf{LSN} & TransactionId & LastLSN & Status \\
 			\hline
 			\multirow{2}{*}{4} & T1 & 4 & C \\
-			& T2 & 4 & P \\
+			& T2 & 1 & P \\
 			\hline
-			5 & T2 & 5 & P \\ 
+			5 & T2 & 1 & P \\ 
 			\hline
-			6 & T2 & 6 & P \\
+			6 & T2 & 6 & U \\
 			\hline
-			7 & T2 & 7 & P \\
+			7 & T2 & 7 & U \\
 			\hline
 		\end{tabular}
 	\end{table}
@@ -431,10 +431,14 @@ Rotterdam, Netherlands}
 			\hline
 			\textbf{LSN} & Object & RecLSN \\
 			\hline
-			\multirow{2}{*}{4 - 7} & A & 0 \\
+			\multirow{2}{*}{4, 5} & A & 0 \\
 			& B & 1 \\
 			\hline
-			\multirow{2}{*}{6 - 7} & A & 0 \\
+			\multirow{3}{*}{6} & A & 0 \\
+			& B & 1 \\
+			& C & 6 \\
+			\hline
+			\multirow{4}{*}{7} & A & 0 \\
 			& B & 1 \\
 			& C & 6 \\
 			& D & 7 \\
