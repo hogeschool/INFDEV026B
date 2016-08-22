@@ -1,86 +1,61 @@
 \section{Course program}
 	The course is structured into seven lecture units. The seven lecture units take place during the seven weeks of the course, but are not necessarily in a one-to-one correspondance with the course weeks.
 
-	\subsection{Lecture 0 - Refresher}
-		The course starts with a quick refresher on SQL and RDBMS's:
+	\subsection{Unit 1 - Review}
+		The course starts with a quick review on SQL and RDBMS's:
 
 		\paragraph*{Topics}
 			\begin{itemize}
 				\item Entities and relationships
 				\item SQL operators
 			\end{itemize}
-	\subsection{Lecture 1 - Object Relational Mapping}
-		The course starts with a quick refresher on SQL and RDBMS's:
+			
+	\subsection{Unit 2 - Normalization}
+		Theoretical concepts behind normalization of relational models. Normalization algorithms:
 
 		\paragraph*{Topics}
 			\begin{itemize}
-				\item Java database connectors JDBC
-				\item Object relational mapping
-				\item Java persistence API
-				\item Sample implementation of ORM such as Hibernate or Eclipselink
+				\item Redundancy problem.
+				\item Definition of functional dependencies.
+				\item Normal forms definition.
 			\end{itemize}
 
-	\subsection{Lecture 2 - Indexes}
-		The second lecture covers performance issues in (relational) queries and the potential to use indexes to speed-up execution of such queries:
-
+	\subsection{Unit 3 - Normalization algorithms}
+		In this unit we cover the main normalization techniques.
 		\paragraph*{Topics}
-			\begin{itemize}
-				\item Potentially slow query operators: \texttt{where}, \texttt{join}, etc.
-				\item Sorting data by value: hash-tables and hashing algorithms
-				\item Using a hash-index
-				\item Sorting data by value comparison: balanced trees
-				\item Using a tree-index
-			\end{itemize}
+		\begin{itemize}
+			\item Normalization in 1NF, 2NF, 3NF, BCNF.
+			\item Exercises on normalization.
+		\end{itemize}		
 
 
-	\subsection{Lecture 3 - ACID}
-		The third lecture covers the inflexible but precise framework of modern ACID (R)DBMS's:
-
-		\paragraph*{Topics}
-			\begin{itemize}
-				\item Transactions are integral: atomicity
-				\item Database maintains valid state: consistency
-				\item Transactions are serialized: isolation
-				\item Database cannot break: durability
-			\end{itemize}
-
-
-	\subsection{Lecture 4 - Concurrency}
+	\subsection{Unit 4 - Concurrency}
 		The fourth lecture covers handling of potentially conflicting concurrent query execution in an ACID DBMS:
 
 		\paragraph*{Topics}
 			\begin{itemize}
+				\item ACID property.
 				\item Serialization
 				\item Locks
 				\item Deadlocks and their prevention
 			\end{itemize}
 
 
-	\subsection{Lecture 5 - Crash recovery}
-		The fifth lecture covers handling of disastrous events:
+	\subsection{Unit 5 - NOSLQ: Map-Reduce paradigm}
+		The fifth lecture covers map-reduce paradigm:
 
 		\paragraph*{Topics}
 			\begin{itemize}
-				\item Log
-				\item Write-ahead log
-				\item Checkpointing
-				\item Recovery from a system crash
+				\item Map function.
+				\item Reduce function.
+				\item Map-Reduce is SELECT-FROM-WHERE
+				\item Idea behind NoSQL
+				\item Document database.
 			\end{itemize}
 
 
-	\subsection{Lecture 6 - BASE}
-		The sixth lecture covers an alternative tradeoff to ACID:
-
-		\paragraph*{Topics}
-			\begin{itemize}
-				\item Stay always connected: Basic availability
-				\item Acceptance of partially wrong states: Soft state
-				\item Slower propagation of updated information: Eventual consistency
-			\end{itemize}
-
-
-	\subsection{Lecture 7 - Graph databases}
-		The seventh lecture covers a specific example of no-SQL databases, specifically graph databases:
+	\subsection{Unit 6 - Graph databases}
+		The sixth lecture covers a specific example of no-SQL databases, specifically graph databases:
 
 		\paragraph*{Topics}
 			\begin{itemize}
