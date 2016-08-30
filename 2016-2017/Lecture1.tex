@@ -23,9 +23,10 @@ showstringspaces=false}
 
 \title{Introduction to normalization}
 
-\author{ }
+\author{TEAM INFDEV}
 
-\institute{DEV03-5 \\ The DEV team}
+\institute{Hogeschool Rotterdam \\ 
+	Rotterdam, Netherlands}
 
 \date{}
 
@@ -429,10 +430,21 @@ showstringspaces=false}
 		%\vspace{-10pt}
 	\end{wrapfigure}
 	
-	\textbf{Example:} The table to the right is in 3NF but not in BCNF because COUNTY\textunderscore NAME depends on AREA, which is not a superkey.
+	\textbf{Example:} The table to the right is in 3NF but not in BCNF because AREA depends on COUNTY\textunderscore NAME, which is not a superkey.
 	
 \end{frame}
 
+\SlideSection{Summary}
+
+\begin{frame}
+	\frametitle{Summary}
+	\begin{itemize}
+		\item Unnormalized tables might contain data redundancy and cause anomalies.
+		\item Normal form are a way to solve these problems.
+		\item There are normal form definitions for tables with just one key (the primary key and no candidate keys).
+		\item There are normal form definitions for tables with candidate keys.
+	\end{itemize}
+\end{frame}
 
 
 \end{document}
