@@ -144,7 +144,8 @@ showstringspaces=false}
 \end{frame}
 
 \begin{frame}
-	
+	\frametitle{Normal forms}
+	\framesubtitle{Functional dependencies}
 	\begin{itemize}
 		\item Both kinds of definitions of normal forms rely on the concept of functional dependency.
 		\item In what follows we write \tuple{i}{X} to indicate the values of the row i of a table for a set of attributes X
@@ -194,7 +195,7 @@ showstringspaces=false}
 			\hline
 			\underline{ssn} & name & salary\\
 			\hline
-			299260 & John Smith & 25000 \\
+			299260 & John Smith & 2500 \\
 			\hline
 			993693 & Walter White & 3000 \\
 			\hline
@@ -205,6 +206,7 @@ showstringspaces=false}
 		\end{tabular}
 	\end{table}
 	
+	\pause
 	By looking at the data in the table I could infer that \fdep{name}{salary} because two employees with the name John Smith earn 2500 euros per month.
 	If later I add the tuple (395935,John Smith,2000) (another employee with the same name but different salary) the dependency is gone!
 	This because clearly the salary of an employee should not depend on a person’s name, but this is what we could infer just by looking at the data.
