@@ -123,7 +123,7 @@ Rotterdam, Netherlands}
 \SlideSubSection{Relations - 1 : N}
 \begin{slide}{
 \item Entity modelling a starship and one modelling a weapon.
-\item Realted by ``mounted''
+\item Related by ``mounted''
 \item The cardinality is 1:N : a weapon can be mounted only on one starship, but a starship can mount more than one weapon.
 
 %insert picture here
@@ -132,7 +132,7 @@ Rotterdam, Netherlands}
 \SlideSubSection{Relations - N : M}
 \begin{slide}{
 \item Entity modelling a starship and one modelling an asteroid.
-\item Realted by ``collides with''
+\item Related by ``collides with''
 \item The cardinality is N : M : several starships can collide with several asteroids.
 
 %insert picture here
@@ -172,9 +172,9 @@ Rotterdam, Netherlands}
 
 \vspace{0.5cm}
 \centering
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c||c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
 \underline{id} & name & shields & pilot & armour & integrity \\
 \hline
@@ -213,9 +213,9 @@ Rotterdam, Netherlands}
 \end{tabular}
 
 \vspace{0.2cm}
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
 \underline{id} & name & shields & pilot  & armour & integrity \\
 \hline
@@ -241,11 +241,11 @@ In the relation \texttt{Mounts} the attribute \texttt{shipid} is a foreign key t
 
 \SlideSubSection{SELECT-FROM}
 \begin{frame}[fragile]
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & pilot & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -261,9 +261,9 @@ FROM Ships
 
 \SlideSubSection{SELECT-FROM-WHERE (Selection)}
 \begin{frame}[fragile]
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
 \underline{id} & name & pilot & shields & armour & integrity \\
 \hline
@@ -282,11 +282,11 @@ WHERE s.pilot = 'William Adama'
 
 \SlideSubSection{SELECT-FROM-WHERE (Projection)}
 \begin{frame}[fragile]
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & pilot & armour & integrity \\
+\underline{id} & name & pilot & shields &  armour & integrity \\
 \hline
 \end{tabular}
 
@@ -304,11 +304,11 @@ where s.pilot = 'Starbucks'
 \SlideSubSection{JOIN}
 \begin{frame}[fragile]
 
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & pilot & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -343,11 +343,11 @@ WHERE s.id = m.shipid AND
 \SlideSubSection{JOIN (multiple tables)}
 \begin{frame}[fragile]
 
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & pilot & armour & integrity \\
+\underline{id} & name & pilot & shields  & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -388,7 +388,7 @@ WHERE s.id = m.Shipid AND
 \hline
 \multicolumn{6}{|c|}{\textbf{Ship}} \\
 \hline
-\underline{Serial} & Name & Pilot & Shields & Armour & Integrity \\
+\underline{id} & name & pilot & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -396,7 +396,7 @@ WHERE s.id = m.Shipid AND
 \hline
 \multicolumn{3}{|c|}{\textbf{Mounts}} \\
 \hline
-\underline{ShipSerial} & \underline{WeaponName} & Count \\
+\underline{shipid} & \underline{weaponName} & Count \\
 \hline
 \end{tabular}
 
@@ -425,11 +425,11 @@ WHERE s.id = m.shipid AND
 \SlideSubSection{Aggregates (COUNT, HAVING)}
 \begin{frame}[fragile]
 
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|}
 \hline
-\multicolumn{5}{|c|}{\textbf{Ships}} \\
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name  & pilot & shields & armour & integrity \\
 \hline
 \end{tabular}
 
