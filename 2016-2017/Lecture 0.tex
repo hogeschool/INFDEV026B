@@ -431,7 +431,7 @@ WHERE s.id = m.shipid AND
 \begin{lstlisting}[showstringspaces=false]
 SELECT COUNT(*)
 FROM (
- SELECT COUNT(*) AS ShipCount
+ SELECT * AS ShipCount
  FROM Ship s, Mounts m, Weapon w
  WHERE s.id = m.shipid AND 
       m.weaponName = w.Name
