@@ -28,6 +28,31 @@ Rotterdam, Netherlands}
 \begin{document}
 \maketitle
 
+
+\SlideSection{General Stuff}
+%\SlideSubSection{ME}
+%\begin{slide}{
+%\item Ahmad Omar
+%\item Email: omara@hr.nl
+%\item Github: https://github.com/hogeschool/INFDEV03-5/tree/master/2016-2017
+%\item Contact hour: Wednesday 13:30-14:30
+%\item Friday not at work 
+%}\end{slide}
+
+\SlideSubSection{Course}
+\begin{slide}{
+\item Three assignment (Relational Databases, Document Database, Graph Database)
+\item Two Exams: Written and practicum (oral check)
+}\end{slide}
+
+\SlideSubSection{Course}
+\begin{slide}{
+\item Relational databases: advantages and limitations (PostgreSQL)
+\item NoSQL databases: advantages, limitation, two cases studies (MongoDB and Neo4J)  
+\item Advance topics for big data such as Hadoop, Spark will not be discussed
+}\end{slide}
+
+
 \SlideSection{Introduction}
 \SlideSubSection{Lecture topics}
 \begin{slide}{
@@ -151,12 +176,12 @@ Rotterdam, Netherlands}
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & shields & pilot & armour & integrity \\
 \hline
 \end{tabular}
 
 \vspace{0.5cm}
-(38258269, "Battlestar Galactica", 3000, 5000, 1.0)
+(38258269, "Battlestar Galactica", 3000, "Captain Jack" ,5000, 1.0)
 }\end{slide}
 
 \SlideSubSection{Keys}
@@ -166,8 +191,8 @@ Rotterdam, Netherlands}
 
 \vspace{0.5cm}
 \textbf{Example:}\\
-\textbf{Primary key:} (id, name, shield) \\
-\textbf{Candidate key:} (id)
+\textbf{Candidate key:} (id, name) \\
+\textbf{Primary key:} (id)
 }\end{slide}
 
 \SlideSubSection{Keys}
@@ -192,7 +217,7 @@ Rotterdam, Netherlands}
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & shields & pilot  & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -208,9 +233,9 @@ In the relation \texttt{Mounts} the attribute \texttt{shipid} is a foreign key t
 \begin{slide}{
 \item Declarative language (``What'' not ``How''). Consists of 4 categories
 \pause
-\item Data Definition Language DDL: used to create relations (tables).
-\item Data Manipulation Language: used to insert/modify/extract data from relations (tables).
-\item Data Control Language: grant control to tables, views and database
+\item Data Definition Language (DDL): used to create relations (tables).
+\item Data Manipulation Language (DML): used to insert/modify/extract data from relations (tables).
+\item Data Control Language (DCL): grant control to tables, views and database
 \item Transaction Control Language TCL:  used to create transactions and to control them. 
 }\end{slide}
 
@@ -240,7 +265,7 @@ FROM Ships
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & pilot & shields & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -261,7 +286,7 @@ WHERE s.pilot = 'William Adama'
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & shields & pilot & armour & integrity \\
 \hline
 \end{tabular}
 
@@ -322,7 +347,7 @@ WHERE s.id = m.shipid AND
 \hline
 \multicolumn{5}{|c|}{\textbf{Ships}} \\
 \hline
-\underline{id} & name & shields & armour & integrity \\
+\underline{id} & name & shields & pilot & armour & integrity \\
 \hline
 \end{tabular}
 
