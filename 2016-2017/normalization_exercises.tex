@@ -33,6 +33,7 @@ breaklines=true}
 		\item (Complete after lesson 2) Apply the normalization algorithms seen in class to each table. Use intermediate refinements, i.e. if the table is in 1NF first normalize in 2NF and, if necessary, in BCNF.
 	\end{enumerate}
 	
+	
 	\paragraph*{Exercise 1 - Lockers}
 	
 	The attribute \texttt{locker} is multivalued and id is unique within the multivalue attribute.
@@ -144,4 +145,68 @@ breaklines=true}
 			\hline
 		\end{tabular}
 	\end{table}
+	
+	\paragraph*{Exercise 7 - Courses}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{employee\textunderscore code}}{\texttt{name,surname}}
+		\item \fdep{\texttt{study\textunderscore points}}{\texttt{hours}}
+		\item \fdep{\texttt{course\textunderscore code}}{\texttt{hours}}
+		\item \fdep{\texttt{course\textunderscore code}}{\texttt{study\textunderscore points}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{courses}} \\
+			\hline
+			employee\textunderscore code & name & surname & study\textunderscore points & hours & \underline{course\textunderscore code} & course\textunderscore name \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\newpage
+	
+	\paragraph*{Exercise 8 - Flights}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{departure,arrival}}{\texttt{flight\textunderscore duration}}
+		\item \fdep{\texttt{captain\textunderscore code}}{\texttt{captain\textunderscore name}}
+		\item \fdep{\texttt{flight\textunderscore code}}{\texttt{captain\textunderscore name}}
+		\item \fdep{\texttt{flight\textunderscore code}}{\texttt{captain\textunderscore code}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{flights}} \\
+			\hline
+			\underline{flight\textunderscore code} & plane\textunderscore model & departure & arrival & flight\textunderscore time & captain\textunderscore name & captain\textunderscore code \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 9 - Buildings}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+	\item \fdep{\texttt{material}}{\texttt{maximum\textunderscore pressure,specific\textunderscore weight}}
+	\item \fdep{\texttt{building\textunderscore length,building\textunderscore width,building\textunderscore height}}{\texttt{tax\textunderscore rate}}
+	\item \fdep{\texttt{building\textunderscore type\textunderscore code}}{\texttt{building\textunderscore length,building\textunderscore width,building\textunderscore height}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{6}{|c|}{\textbf{buildings}} \\
+			\hline
+			\underline{building\textunderscore type\textunderscore code} & \underline{component\textunderscore type} & \underline{material} & building\textunderscore length & building\textunderscore width & building\textunderscore height \\ 
+			\hline
+			\multicolumn{2}{|c|}{tax\textunderscore rate} & \multicolumn{2}{|c|}{maximum\textunderscore pressure} & \multicolumn{2}{|c|}{specific\textunderscore weight} \\
+			\hline
+		\end{tabular}
+	\end{table}
+
 \end{document}
