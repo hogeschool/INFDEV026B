@@ -585,18 +585,21 @@ COMMIT;
 			\hline
 			S(A) & \\
 			R(A) & \\
-			X(C) & \\
+			S(C) & \\
 			R(C) & \\
+			X(C) & \\
 			W(C) & \\
-			& X(B) \\
+			& S(B) \\
 			& R(B) \\
+			& X(B) \\
 			& W(B) \\
 			& WaitLock(C) \\
 			Commit & \\
 			Unlock(A) & \\
 			Unlock(C) & \\
-			& X(C) \\
+			& S(C) \\
 			& R(C) \\
+			& X(C) \\
 		 	& W(C) \\
 			& Commit \\
 			& Unlock(B) \\
@@ -656,8 +659,9 @@ COMMIT;
 			Commit & & \\
 			Unlock(A) & & \\
 			Unlock(B) & & \\
-			& X(A) & \\
+			& S(A) & \\
 			& R(A) & \\
+			& X(A) & \\
 			& W(A) & \\
 			& X(B) & \\
 			& W(B) & \\
