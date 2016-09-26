@@ -151,8 +151,7 @@ breaklines=true}
 	\begin{itemize}[noitemsep]
 		\item \fdep{\texttt{employee\textunderscore code}}{\texttt{name,surname}}
 		\item \fdep{\texttt{study\textunderscore points}}{\texttt{hours}}
-		\item \fdep{\texttt{course\textunderscore code}}{\texttt{hours}}
-		\item \fdep{\texttt{course\textunderscore code}}{\texttt{study\textunderscore points}}
+		\item \fdep{\texttt{course\textunderscore code}}{\texttt{hours,study\textunderscore points,course\textunderscore name}}
 	\end{itemize}
 	
 	\begin{table}[!h]
@@ -161,7 +160,7 @@ breaklines=true}
 			\hline
 			\multicolumn{7}{|c|}{\textbf{courses}} \\
 			\hline
-			employee\textunderscore code & name & surname & study\textunderscore points & hours & \underline{course\textunderscore code} & course\textunderscore name \\
+			\underline{employee\textunderscore code} & name & surname & study\textunderscore points & hours & \underline{course\textunderscore code} & course\textunderscore name \\[0.3cm]
 			\hline
 		\end{tabular}
 	\end{table}
@@ -173,8 +172,7 @@ breaklines=true}
 	\begin{itemize}[noitemsep]
 		\item \fdep{\texttt{departure,arrival}}{\texttt{flight\textunderscore duration}}
 		\item \fdep{\texttt{captain\textunderscore code}}{\texttt{captain\textunderscore name}}
-		\item \fdep{\texttt{flight\textunderscore code}}{\texttt{captain\textunderscore name}}
-		\item \fdep{\texttt{flight\textunderscore code}}{\texttt{captain\textunderscore code}}
+		\item \fdep{\texttt{flight\textunderscore code}}{\texttt{plane\textunderscore model,departure,arrival,flight\textunderscore time}}
 	\end{itemize}
 	
 	\begin{table}[!h]
@@ -183,7 +181,7 @@ breaklines=true}
 			\hline
 			\multicolumn{7}{|c|}{\textbf{flights}} \\
 			\hline
-			\underline{flight\textunderscore code} & plane\textunderscore model & departure & arrival & flight\textunderscore time & captain\textunderscore name & captain\textunderscore code \\
+			\underline{flight\textunderscore code} & plane\textunderscore model & departure & arrival & flight\textunderscore time & captain\textunderscore name & \underline{captain\textunderscore code} \\
 			\hline
 		\end{tabular}
 	\end{table}

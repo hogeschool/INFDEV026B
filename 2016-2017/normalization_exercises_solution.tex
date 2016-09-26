@@ -1,0 +1,549 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{enumitem}
+\author{Francesco Di Giacomo, Ahmad Omar}
+\date { }
+\title{Normalization exercises}
+\usepackage{listings}
+\lstset{language=SQL,
+basicstyle=\ttfamily\footnotesize,
+frame=shadowbox,
+mathescape=true,
+showstringspaces=false,
+showspaces=false,
+showstringspaces = false,
+breaklines=true}
+\newcommand{\valseq}[1]{$\lbrace$ #1 $\rbrace$}
+\newcommand{\tuple}[2]{$t_{#1}$[#2]}
+\newcommand{\fdep}[2]{#1 $\rightarrow$ #2}
+\newcommand{\normalization}[3]{
+	
+	\vspace{0.3cm}
+	\noindent
+	1NF:\\
+	#1
+	
+	\vspace{0.3cm}
+	\noindent
+	2NF:\\
+	#2
+	
+	\vspace{0.3cm}
+	\noindent
+	BCNF:\\
+	#3
+	}
+
+\begin{document}
+	\maketitle
+	
+	\textbf{Note:} For each of the following exercises complete the following tasks:
+	\begin{enumerate}
+		\item (Complete after lesson 1) Find what normal form each of the following tables satisfies.Motivate the answer according the definition of normal forms seen in class.
+		\item (Complete after lesson 2) Apply the normalization algorithms seen in class to each table. Use intermediate refinements, i.e. if the table is in 1NF first normalize in 2NF and, if necessary, in BCNF.
+	\end{enumerate}
+	
+	
+	\paragraph*{Exercise 1 - Lockers}
+	
+	The table is in no normal form, since it contains a multi-value attribute. Note that, after putting the sub-attributes of the multi-value attribute, there exists the dependency \fdep{\texttt{locker\textunderscore id}}{\texttt{key\textunderscore num,size}}
+	
+	\normalization{
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{6}{|c|}{\textbf{locker}} \\
+			\hline
+			\underline{teacher\textunderscore id} & \underline{locker\textunderscore id} & name & surname & key\textunderscore num & size \\
+			\hline
+		\end{tabular}
+	\end{table}}
+	{The dependency created at the previous step breaks 2NF because the left side is part of a key and the right side is a non-key attribute (remember that you can use the decomposition rule to create two separate dependencies, each one with a single attribute).
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multicolumn{4}{|c|}{\textbf{teacher}} \\
+			\hline
+			\underline{teacher\textunderscore id} & \underline{locker\textunderscore id} & name & surname \\
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{\textbf{locker}} \\
+			\hline
+			\underline{locker\textunderscore id} & key\textunderscore num & size \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\noindent
+	In \texttt{teacher} the attribute \texttt{locker\textunderscore id} is a foreign key to \texttt{locker}.}
+	{The table is already in BCNF since all dependencies have the left argument which is a superkey.}
+	
+	\paragraph*{Exercise 2 - Library}
+	
+	The table is in no normal form since it contains a multi-value attribute.
+	
+	\normalization{
+	\begin{table}[!h]
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{library}} \\
+			\hline
+			\underline{card\textunderscore num} & \underline{book\textunderscore author} & \underline{book\textunderscore title} & \underline{book\textunderscore date} & name & surname & return\textunderscore date \\
+			\hline
+		\end{tabular}
+	\end{table}
+	With this transformation we introduce the dependency \fdep{\texttt{author,title,date}}{\texttt{return\textunderscore date}}}
+	{Because of the previous dependency, the table is not in 2NF (the left side is part of a key and the right side is a non-key attribute)
+		\begin{table}[!h]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				\multicolumn{6}{|c|}{\textbf{member}}\\
+				\hline
+				\underline{card\textunderscore num} & \underline{book\textunderscore author} & \underline{book\textunderscore title} & \underline{book\textunderscore date} & name & surname \\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|c|}
+				\hline
+				\multicolumn{4}{|c|}{\textbf{book}}\\
+				\hline
+				\underline{book\textunderscore author} & \underline{book\textunderscore title} & \underline{date} & return\textunderscore date \\
+				\hline
+			\end{tabular}
+		\end{table}
+		
+		\noindent
+		In \texttt{member} the attributes \valseq{\texttt{book\textunderscore title,book\textunderscore date,return\textunderscore date}} are a foreign key to \texttt{book}.
+		
+		\noindent
+		At this point we still have the dependency \fdep{\texttt{date}}{\texttt{return\textunderscore date}} which breaks the 2NF, so the table \texttt{book} must be decomposed again. The final structure in 2NF is the following:
+		
+		\begin{table}[!h]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				\multicolumn{6}{|c|}{\textbf{member}}\\
+				\hline
+				\underline{card\textunderscore num} & \underline{book\textunderscore author} & \underline{book\textunderscore title} & \underline{book\textunderscore date} & name & surname \\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|}
+				\hline
+				\multicolumn{3}{|c|}{\textbf{book}}\\
+				\hline
+				\underline{book\textunderscore author} & \underline{book\textunderscore title} & \underline{date} \\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{dates}}\\
+				\hline
+				\underline{date} & return\textunderscore date\\
+				\hline
+			\end{tabular}
+		\end{table}
+		
+		\noindent
+		In \texttt{member} the attribute \texttt{date} is foreign key to \texttt{dates}
+	}
+	{
+		All the tables at this point are in BCNF because all the dependencies have a superkey as left argument.}
+	
+	
+	
+	\paragraph*{Exercise 3 - Books}
+	
+	\normalization{
+		The table is already in 1NF because all the attributes are atomic.}
+	{
+		Both dependencies have the left argument that is part of a key and the right argument that is a non-key attribute, thus they break 2NF
+		
+		\begin{table}[!h]
+			\centering
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{book}}\\
+				\hline
+				\underline{author} & \underline{title}\\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{book\textunderscore author}}\\
+				\hline
+				\underline{author} & author\textunderscore bdate\\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|c|}
+				\hline
+				\multicolumn{4}{|c|}{\textbf{description}}\\
+				\hline
+				\underline{title} & genre & page & section\\
+				\hline
+			\end{tabular}
+		\end{table}
+		\noindent
+		In the table \texttt{book} the attribute \textunderscore{author} is a foreign key to \texttt{book\textunderscore author} and \texttt{title} is a foreign key to \texttt{description}.}{
+		All the tables are already in BCNF since the left argument of all the dependencies are superkeys.}
+	
+	\paragraph*{Exercise 4 - Houses}
+	
+	The table is in no normal form because it contains a multi-value attribute.
+	
+	\normalization{
+		\begin{table}[!h]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|c|}
+				\hline
+				\multicolumn{8}{|c|}{\textbf{houses}} \\
+				\hline
+				\underline{owner} & \underline{postal\textunderscore code}  & \underline{city} & \underline{street} & \underline{number} & price & size & account\\
+				\hline
+			\end{tabular}
+		\end{table}
+		
+		}{
+			Both dependencies break the 2NF because the left argument is part of a key and the right argument is a non-key attribute. Indeed using the decomposition rule we can get, from the first one, the three dependencies \fdep{\texttt{postal\textunderscore code}}{\texttt{city,street,number}}, \fdep{\texttt{postal\textunderscore code}}{\texttt{price}}\fdep{\texttt{postal\textunderscore code}}{size}. Note that the dependency \fdep{\texttt{postal\textunderscore code}}{\texttt{city,street,number}} (which is equivalent to \fdep{\texttt{postal\textunderscore code}}{\texttt{address}}) does not break the 2NF because the right arguments are key attributes.
+			
+			\begin{table}[!h]
+				\centering
+				\begin{tabular}{|c|c|c|c|c|}
+					\hline
+					\multicolumn{5}{|c|}{\textbf{houses}} \\
+					\hline
+					\underline{owner} & \underline{postal\textunderscore code}  & \underline{city} & \underline{street} & \underline{number}\\[0.3cm]
+					\hline
+				\end{tabular}
+				
+				\vspace{0.5cm}
+				\begin{tabular}{|c|c|c|}
+					\hline
+					\multicolumn{3}{|c|}{\textbf{house\textunderscore info}} \\
+					\hline
+					\underline{postal\textunderscore code} & price & size\\[0.3cm]
+					\hline
+				\end{tabular}
+				
+				\vspace{0.5cm}
+				\begin{tabular}{|c|c|}
+					\hline
+					\multicolumn{2}{|c|}{\textbf{owner\textunderscore info}} \\
+					\hline
+					\underline{owner} & owner\textunderscore account\\
+					\hline
+				\end{tabular}
+			\end{table}
+			
+			\noindent
+			In \texttt{houses} the attribute \texttt{owner} is a foreign key to \texttt{owner\textunderscore info} and \texttt{postal\textunderscore code} is a foreign key to \texttt{house\textunderscore info}
+		}{
+			All tables are already in BCNF because the left argument of all the dependencies is a superkey.
+		}
+	
+	\paragraph*{Exercise 5 - Port}
+	\normalization{
+		The table is already in 1NF because all attributes are atomic}{
+		The dependencies \fdep{\texttt{ship\textunderscore name}}{\texttt{docked\textunderscore at,country,weight,class}} and \fdep{\texttt{captain}}{\texttt{cpt\textunderscore license}} break the 2NF because the left argument is part of a key and the right argument is a non-key attribute (again use the decomposition rule). Note that the dependency \fdep{\texttt{docked\textunderscore at}}{\texttt{country}} does not break 2NF because the left argument is not part of any key (the 2NF only considers dependencies where the left side is part of a key)
+		
+		\begin{table}[!h]
+			\centering
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{ship\textunderscore captain}}\\
+				\hline
+				\underline{ship\textunderscore name} & \underline{captain}\\[0.3cm]
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				\multicolumn{5}{|c|}{\textbf{ship}}\\
+				\hline
+				\underline{ship\textunderscore name} & weight & class & docked\textunderscore at & country\\[0.3cm]
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{license}}\\
+				\hline
+				\underline{captain} & cpt\textunderscore license\\ [0.3cm]
+				\hline
+			\end{tabular}
+			
+			In \texttt{ship \textunderscore captain} the attribute \texttt{ship\textunderscore name} is foreign key to \texttt{ship} and \texttt{captain} is a foreign key to \texttt{license}.
+		\end{table}}{
+			The dependency \fdep{\texttt{docked\textunderscore at}}{\texttt{country}} breaks BCNF because the left argument is not a superkey. The table \texttt{ship} must be decomposed in BCNF.
+			
+			\begin{table}[!h]
+				\centering
+				\begin{tabular}{|c|c|c|c|}
+					\hline
+					\multicolumn{4}{|c|}{\textbf{ship}}\\
+					\hline
+					\underline{ship\textunderscore name} & weight & class & docked\textunderscore at\\ [0.3cm]
+					\hline
+				\end{tabular}
+				
+				\vspace{0.5cm}
+				\begin{tabular}{|c|c|}
+					\hline
+					\multicolumn{2}{|c|}{\textbf{docking}}\\
+					\hline
+					\underline{docke\textunderscore at} & country\\
+					\hline
+				\end{tabular}
+			\end{table}
+			
+			\noindent
+			In the table \texttt{ship} the attribute \texttt{docked\textunderscore at} is a foreign key to \texttt{docking}.
+		}
+	
+	\paragraph*{Exercise 6 - Cellar}
+	\normalization{
+		The table is in 1NF because it contains only atomic attributes}
+	{
+		The dependencies \fdep{\texttt{producer}}{\texttt{country,location}} and \fdep{\texttt{wine}}{\texttt{bottling\textunderscore date,price/l,grape\textunderscore variety}} break the 2NF since the left side is part of a key and the right side is a non-key attribute. The other dependencies do not break 2NF because they do not have a left argument that is part of a key
+		
+		\newpage
+		
+		\begin{table}[!h]
+			\centering
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{cellar}}\\
+				\hline
+				\underline{producer} & \underline{wine}\\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|}
+				\hline
+				\multicolumn{3}{|c|}{\textbf{producer}}\\
+				\hline
+				\underline{producer} & country & location\\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|c|}
+				\hline
+				\multicolumn{4}{|c|}{\textbf{wine}}\\
+				\hline
+				\underline{wine} & bottling\textunderscore date & price/l & grape\textunderscore variety\\
+				\hline
+			\end{tabular}
+		\end{table}
+		
+		\noindent
+		In \texttt{cellar} the attribute \texttt{producer} is a foreign key to the table \texttt{producer} and the attribute \texttt{wine} is a foreign key to the table \texttt{wine}.
+	}
+	{
+		The dependencies \fdep{\texttt{location}}{\texttt{country}}
+		\fdep{\texttt{grape\textunderscore variety}}{\texttt{price/l}} break BCNF because their left argument is not a superkey. The tables \texttt{wine} and \texttt{producer} must be normalized in BCNF.
+		
+		\begin{table}[!h]
+			\centering
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{producer}}\\
+				\hline
+				\underline{producer} & location\\[0.3cm]
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{location}}\\
+				\hline
+				\underline{location} & country\\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|c|}
+				\hline
+				\multicolumn{3}{|c|}{\textbf{wine}}\\
+				\hline
+				\underline{wine} & bottling\textunderscore date & grape\textunderscore variety\\
+				\hline
+			\end{tabular}
+			
+			\vspace{0.5cm}
+			\begin{tabular}{|c|c|}
+				\hline
+				\multicolumn{2}{|c|}{\textbf{grape}}\\
+				\hline
+				\underline{grape\textunderscore variety} & price/l\\[0.3cm]
+				\hline
+			\end{tabular}		
+		\end{table}
+		
+		\noindent
+		In the table \texttt{wine} the attribute \texttt{grape\textunderscore variety} is foreign key to \texttt{grape} and in the table \texttt{producer} the attribute \texttt{location} is foreign key to the table \texttt{location}.
+	}
+	
+	\newpage
+	\textbf{Note:} The following exercises are analogous to the previous exercises so only the final solution can be found
+	
+	\paragraph*{Exercise 7 - Courses}
+		
+	In \texttt{teaching} the attribute \texttt{employee\textunderscore code} is a foreign key to \texttt{employee} and the attribute \texttt{course\textunderscore code} is a foreign key to \texttt{course}. In the table \texttt{course} the attribute study\textunderscore points is a foreign key to \texttt{hours}.
+
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\textbf{teaching}}\\
+			\hline
+			\underline{employee\textunderscore code} & \underline{course\textunderscore code}\\[0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{\textbf{employee}}\\
+			\hline
+			\underline{employee\textunderscore code} & name & surname\\ [0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{\textbf{course}}\\
+			\hline
+			\underline{course\textunderscore code} & course\textunderscore name & study\textunderscore points\\ [0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\textbf{hours}}\\
+			\hline
+			\underline{study\textunderscore points} & hours\\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	
+	\paragraph*{Exercise 8 - Flights}
+	
+	
+	In the table \texttt{flying} the attribute \texttt{flight\textunderscore code} is a foreign key to \texttt{flight}, and the attribute \texttt{captain\textunderscore code} is a foreign key to \texttt{captain}. In the table \texttt{flight} the attributes \valseq{\texttt{departure,arrival}} are a foreign key to \texttt{duration}.
+	\begin{table}[!h]
+		\centering
+		
+		\begin{tabular}{|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\textbf{fying}}\\
+			\hline
+			\underline{flight\textunderscore code} & \underline{captain\textunderscore code}\\[0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multicolumn{4}{|c|}{\textbf{flight}}\\
+			\hline
+			\underline{flight\textunderscore code} & plane\textunderscore model & departure & arrival\\[0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|}
+			\hline
+			\multicolumn{2}{|c|}{\textbf{captain}}\\
+			\hline
+			\underline{captain\textunderscore code} & captain\textunderscore name\\[0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{\textbf{duration}}\\
+			\hline
+			\underline{departure} & \underline{arrival} & flight\textunderscore time\\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\newpage
+	\paragraph*{Exercise 9 - Buildings}
+	
+	In \texttt{materials} the attribute \texttt{building\textunderscore type\textunderscore code} is a foreign key to \texttt{building} and \texttt{material} is a foreign key to the table \texttt{material}. In the table \texttt{building} the attributes \valseq{\texttt{length,width,height}} are a foreign key to \texttt{taxes}.
+	
+	\begin{table}[!h]
+		\centering
+		
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{\textbf{building\textunderscore materials}}\\
+			\hline
+			\underline{building\textunderscore code} & \underline{component\textunderscore type} & \underline{material}\\[0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multicolumn{3}{|c|}{\textbf{material}}\\
+			\hline
+			\underline{material} & aximum\textunderscore pressure & specific\textunderscore weight\\[0.3cm]
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multicolumn{4}{|c|}{\textbf{building}}\\
+			\hline
+			\underline{building\textunderscore code} &  building\textunderscore length & building\textunderscore width & building\textunderscore height\\
+			\hline
+		\end{tabular}
+		
+		\vspace{0.5cm}
+		\begin{tabular}{|c|c|c|c|}
+			\hline
+			\multicolumn{4}{|c|}{\textbf{taxes}}\\
+			\hline
+			\underline{building\textunderscore length} & \underline{building\textunderscore width} & \underline{building\textunderscore height} & tax\textunderscore rate\\[0.3cm]
+			\hline
+		\end{tabular}
+	\end{table}
+
+\end{document}
