@@ -22,7 +22,9 @@
 \item Deliver also the database folder of Neo4j (your \texttt{database\textunderscore name.graphdb}).
 \end{itemize}
 
-\section*{Assignment}
+\textbf{You can do either assignment A or B}
+
+\section*{Assignment A}
 Consider the Entity-Relationship diagram in Figure \ref{fig:erd} representing the model for an airport database.
 
 \begin{itemize}[noitemsep]
@@ -58,5 +60,21 @@ Consider the Entity-Relationship diagram in Figure \ref{fig:erd} representing th
 	\caption{ER Diagram for the assignment}
 	\label{fig:erd}
 \end{figure}
+
+\section*{Assignment B}
+
+Consider the normalized table structure you have created for assignment 1 about the multinational company application. Your tasks are:
+\begin{itemize}
+\item  	Re-factor the application in order to use it with the graph database (Neo4j)
+\item 	Re-implement the CRUD operations for each table to get work with the graph database
+\item  	Map 5 entity sets and their relationships from your relational database to the equivalent structure in graph database 
+\item Reimplement the queries from assignment 2 using cypher queries and show the results in your application
+\begin{enumerate}
+	\item An employee is underworking if he is working less than 5 hours on his projects, he is working normally if he is working between 5 and 20 hours, and he is overworking if he is working more than 20 hours. Output the number of employees that are overworking per project.
+	\item Find the total working hours of all employees and average working hours per employee.
+	\item Find the total fee of an employee. This number is obtained by multiplying the working hours on all the projects by the hour fee of his position.
+\end{enumerate}
+\end{itemize}
+
 
 \end{document}
