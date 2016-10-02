@@ -20,7 +20,7 @@ showstringspaces=false}
 \newcommand{\ts}{\textbackslash}
 
 
-\title{Document Database and Map-Reduce}
+\title{Document Database and MapReduce}
 \author{ }
 \institute{Hogeschool Rotterdam \\ 
 Rotterdam, Netherlands}
@@ -132,7 +132,7 @@ and  Eventual \textbf{C}onsistent \\
 <! ELEMENT department(dept_name, building, budget)>
 <! ELEMENT dept_name (#PCDATA)>
 <! ELEMENT budget (#PCDATA)>
-<!ELEMENT university ( ( department | course | instructor | teaches )+)>
+<! ELEMENT university ( ( department | course | instructor | teaches )+)>
 
 
 Notation:
@@ -178,7 +178,7 @@ Notation:
 
 \SlideSubSection{XML Processing: XQuery and XPath}
 \begin{slide}{
-\item XQuery is derived from the Quilt query language, which itself borrows from SQL, XQL and XML-QL
+\item XQuery is derived from the Quilt query language, which itself borrows from SQL.
 \item XQuery uses a:    for … let … where … order by …result …  \footnote{  \textbf{let}: allows temporary variables, and has no equivalent in SQL}
 \footnote{ \href{http://www.w3schools.com/xsl/xquery_flwor.asp}{Demonstrate an example}}
 \begin{itemize}
@@ -256,59 +256,143 @@ fields
 \item Another disadvantage of this approach is the lack of join query
 }\end{slide}
 
-\SlideSection{Querying collections and objects}
-\SlideSubSection{Selecting data}
-\begin{slide}{
-\item Select queries in MongoDB and SQL 
-\begin{figure}
-		\includegraphics[scale=0.23]{img/mongo-query}
-\end{figure}
-}\end{slide}
 
-\SlideSubSection{Inserting data}
-\begin{slide}{
-\item \red{Adding query examples or live demo}
-}\end{slide}
 
-\SlideSection{Map-Reduce}
+\begin{frame}[fragile]{Querying collections and objects}
+\begin{itemize}
+\item Select queries in MongoDB 
+\end{itemize}
+\begin{lstlisting}
+\\SQL
+SELECT * FROM actors
+
+SELECT * FROM actors WHERE age = 23 
+
+SELECT * FROM actors WHERE age = 23 ORDER BY name
+
+\\Mongo
+db.actors.find()
+
+db.actors.find({age: 23})
+
+db.actors.find({age: 23}).sort({name:1})
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Querying collections and objects}
+\begin{itemize}
+\item Insert queries in MongoDB 
+\item Suppose we have a relationship between actor entity and address entity based on actor\textunderscore id
+\end{itemize}
+\begin{lstlisting}
+\\SQL
+INSERT INTO actors(actor_id,name,age) 
+	VALUES(3, "actor name", 45)
+INSERT INTO address(addressid, street, city, actor_id) 
+	VALUES(5, "Wijnhaven 66", "Rotterdam", 3)
+
+\\Mongo
+db.actors.insert({name:"actor name", age: 23, 
+		address:{street:"Wijnhaven 66", city:"Rotterdam"}
+	})
+\end{lstlisting}
+\end{frame}
+
+\SlideSection{MapReduce}
 \SlideSubSection{Introduction}
 \begin{slide}{
-\item Map-Reduce is a data processing paradigm for condensing large volumes of data into useful aggregated results.
-\item Map- and Reduce-functions are commonly used in functional programming   
+\item MapReduce is a data processing paradigm for condensing large volumes of data into useful aggregated results.
+\item Map- and Reduce functions are commonly used in functional programming   
 \item In INFDEV02-2 and INDEV02-3 we already introduced HOFs
-\item Higher Order Functions HOFs are very powerful in the context for NoSQL databases. 
+\item MapReduce rely on the concept of higher order functions HOFs are very powerful in the context of NoSQL databases. 
 \item The following functions will be further discussed : FlatMap, Map and Reduce 
 }\end{slide}
 
-\SlideSubSection{Map Function}
-\begin{slide}{
+
+\begin{frame}[fragile]{Map Function}
+\begin{itemize}
 \item Apply the function f to each element of list x
 \item map(f, x[0...n-1])
 \item in Python: \\
-\red{def square(x):  return x * x \\
- map(square, [1, 2, 3, 4]) }
- \\ would return [1, 4, 9, 16]
+\end{itemize}
+\begin{lstlisting}
+def square(x):  
+	return x * x 
+
+map(square, [1, 2, 3, 4])  #would return [1, 4, 9, 16]
+ \end{lstlisting}
 \begin{figure}
 		\includegraphics[scale=0.23]{img/map}
 \end{figure}
-}\end{slide}
+\end{frame}
 
-\SlideSubSection{Reduce Function}
-\begin{slide}{
-\item Repeatedly apply binary func9on f to pairs of items in x, replacing the pair of items with the result until only one item remains
+\begin{frame}[fragile]{Reduce Function}
+\begin{itemize}
+\item Repeatedly apply binary function f to pairs of items in x, replacing the pair of items with the result until only one item remains
 \item reduce(f, x[0...n-1])
 \item in Python: \\
-\red{def add(x,y): return x+y \\
-reduce(add, [1,2,3,4])}\\
-would result in a 10
+\end{itemize}
+\begin{lstlisting}
+def add(x,y): 
+	return x+y 
+reduce(add, [1,2,3,4]) #would result in a 10
+\end{lstlisting}
+\begin{figure}
+		\includegraphics[scale=0.23]{img/reduce}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{FlatMap Function}
+\begin{itemize}
+\item Repeatedly apply function f to items in a sublist, then removing the sublist structure with the result of one dimensional list
+\item FlatMap(f, x[[0..n-1],[0..m-1]])
+\item in pseudo Python: suppose the f function returns the element without any change\\
+\end{itemize}
+\begin{lstlisting}
+listOfLists = [[1, 2],[3, 4, 5], [6]]
+for l in  listOfLists:
+	map(f, l)
+reduce(list.__add__, listOfLists)
+#would result in a flatten list [1, 2, 3, 4, 5, 6]
+\end{lstlisting}
+\end{frame}
+
+\SlideSubSection{SQL and MapReduce}
+\begin{slide}{
+\item We have seen so far what map en reduce functions are
+\item But why do we need them in document sturcture?
+\item What are the similarities between MapReduce and SQL?
 }\end{slide}
 
 \SlideSubSection{MapReduce Function in MongoDB}
 \begin{slide}{
-\item Not done yet
+\item Data in mongoDB are saved in documents
+\item The MapReduce function first queries the collection, then maps the result documents to emit key-value pairs which is then reduced based on the keys that have multiple values.
 \begin{figure}
-		\includegraphics[scale=0.23]{img/map-reduce}
+		\includegraphics[scale=0.26]{img/map-reduce}
 \end{figure}
+}\end{slide}
+
+\SlideSubSection{Map and Filter functions vs SQL}
+\begin{slide}{
+\item Relational databases use the map, filter and reduce paradigm (where it is called project, select, aggregate).
+\item SELECT MAX(pixels) FROM  cameras WHERE brand = 'Nikon' 
+\begin{itemize}
+\item cameras is a sequence (a list of rows, where each row has the data for one camera)
+\item WHERE brand = 'Nikon'  is a \textbf{filter}
+\item pixels is a \textbf{map} (extracting just the pixels field from the row)
+\item MAX is a \textbf{reduce}
+\end{itemize}
+\item Demo!
+}\end{slide}
+
+\SlideSubSection{MapReduce Function in a Cluster}
+\begin{slide}{
+\item How does CAP theorem effect the implementation of MapReduce?
+\item It depends on it's execution local or in a cluster  
+\item We have seen how MapReduce is executed locally in document database 
+\item What about clusters?
 }\end{slide}
 
 \SlideSubSection{MapReduce Function in a Cluster}
@@ -318,9 +402,12 @@ would result in a 10
 \item Then merge results with reduce: Also concurrently
 }\end{slide}
 
+\SlideSubSection{End}
+\begin{slide}{
+\item Thank you and the best of luck!
+}\end{slide}
 
 \end{document}
-
 
 \begin{slide}{
 \item ...
