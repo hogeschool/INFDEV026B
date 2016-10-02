@@ -1,0 +1,10 @@
+/Users/omara/Projects/MapReduceSQL/MapReduceSQL/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/omara/Projects/MapReduceSQL/MapReduceSQL/bin/Debug/MapReduceSQL.exe.mdb
+/Users/omara/Projects/MapReduceSQL/MapReduceSQL/bin/Debug/MapReduceSQL.exe
+/Users/omara/Projects/MapReduceSQL/MapReduceSQL/obj/x86/Debug/MapReduceSQL.exe
+/Users/omara/Projects/MapReduceSQL/MapReduceSQL/obj/x86/Debug/MapReduceSQL.exe.mdb
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/bin/Debug/MapReduceSQL.exe.mdb
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/bin/Debug/MapReduceSQL.exe
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/obj/x86/Debug/MapReduceSQL.exe
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/obj/x86/Debug/MapReduceSQL.exe.mdb
