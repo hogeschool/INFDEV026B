@@ -387,10 +387,21 @@ reduce(list.__add__, listOfLists)
 \item Demo!
 }\end{slide}
 
+\SlideSubSection{Join as MapReduce in MongoDB}
+\begin{slide}{
+\item MongoDb does not provide explicit join queries to join two collections
+\item To implement a join you need 
+\begin{itemize}
+\item  a mapper for each collection to retrieve key and values for each collection 
+\item A reducer function to reduce values for each key
+\end{itemize}
+\item Demo! 
+}\end{slide}
+
 \SlideSubSection{MapReduce Function in a Cluster}
 \begin{slide}{
 \item How does CAP theorem effect the implementation of MapReduce?
-\item It depends on it's execution local or in a cluster  
+\item Generally speaking It depends on the execution of MapReduce whether local or in a cluster 
 \item We have seen how MapReduce is executed locally in document database 
 \item What about clusters?
 }\end{slide}
