@@ -1,0 +1,7 @@
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\bin\Debug\MapReduceApp.exe.config
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\bin\Debug\MapReduceApp.exe
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\bin\Debug\MapReduceApp.pdb
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\obj\Debug\MapReduceApp.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\obj\Debug\MapReduceApp.exe
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\obj\Debug\MapReduceApp.pdb
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceApp\MapReduceApp\bin\Debug\table.csv
