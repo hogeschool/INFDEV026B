@@ -1,7 +1,8 @@
-db.actors.insert({actor_id:"a1", name:"actor name"});
-db.actors.insert({actor_id:"a2", name:"another name"});
+db.actors.insert({actor_id:"a1", name:"actor name",age:35});
+db.actors.insert({actor_id:"a2", name:"another name", age: 46});
 db.movies.insert({actor_id:"a1", title:"movie1"});
-db.movies.insert({actor_id:"a2", title:"movie2"});
+db.movies.insert({actor_id:"a1", title:"movie2"});
+db.movies.insert({actor_id:"a2", title:"movie3"});
 
 //map for actors
 actors_map = function() {
@@ -17,7 +18,7 @@ movies_map = function() {
 r = function(key, values) {
   var result = {
       name : "",
-      title : "" 
+      title : [] 
     };
 
     values.forEach(function(value) {
@@ -25,7 +26,7 @@ r = function(key, values) {
             result.name = value.name;
         }
          if(value.title != null) {
-            result.title = value.title;
+            result.title.push(value.title);
         }
     });
     return result;
