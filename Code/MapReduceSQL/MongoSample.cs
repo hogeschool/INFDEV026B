@@ -15,7 +15,7 @@ namespace MapReduceSQL
 	public class MongoSample
 	{
 
-		public static async void testMongo ()
+		public static void testMongo ()
 		{
 
 			//Create a client and collect tot database
@@ -53,7 +53,7 @@ namespace MapReduceSQL
 
 
 			//Mapper function for the collection
-			BsonJavaScript actormap = "function() { " +
+			BsonJavaScript actor_map = "function() { " +
 							"emit(this.actor_id, {'name' : this.name});}";
 
 
@@ -70,7 +70,7 @@ namespace MapReduceSQL
 			options.OutputOptions = MapReduceOutputOptions.Inline;
 
 			//Excute map and reduce functions 
-			var resultMR = actors.MapReduce (actormap,reduce, options);
+			var resultMR = actors.MapReduce (actor_map,reduce, options);
 
 			//print first result only  
 			Console.WriteLine(resultMR.First ());
