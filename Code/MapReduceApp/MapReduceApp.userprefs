@@ -1,9 +1,9 @@
 ﻿<Properties StartupConfiguration="{90D47BE1-DD08-4E4C-AE54-2A9E01DD066A}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MapReduceApp/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MapReduceApp/Table.cs">
     <Files>
-      <File FileName="MapReduceApp/Table.cs" Line="141" Column="8" />
-      <File FileName="MapReduceApp/Program.cs" Line="15" Column="4" />
-      <File FileName="MapReduceApp/HigherOrderFunction.cs" Line="11" Column="44" />
+      <File FileName="MapReduceApp/Table.cs" Line="101" Column="6" />
+      <File FileName="MapReduceApp/Program.cs" Line="1" Column="1" />
+      <File FileName="MapReduceApp/HigherOrderFunction.cs" Line="26" Column="40" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

@@ -8,3 +8,6 @@
 /Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/bin/Debug/MapReduceSQL.exe
 /Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/obj/x86/Debug/MapReduceSQL.exe
 /Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/obj/x86/Debug/MapReduceSQL.exe.mdb
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/bin/Debug/MongoDB.Bson.dll
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/bin/Debug/MongoDB.Driver.Core.dll
+/Users/omara/Documents/DEV/INFDEV03-5/Code/MapReduceSQL/bin/Debug/MongoDB.Driver.dll

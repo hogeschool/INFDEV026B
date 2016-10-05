@@ -1,7 +1,8 @@
-﻿<Properties StartupItem="MapReduceSQL/MapReduceSQL.csproj">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MapReduceSQL/Program.cs">
+﻿<Properties StartupConfiguration="{720704C0-F273-4326-A94F-36851F986016}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MapReduceSQL/MongoSample.cs">
     <Files>
-      <File FileName="MapReduceSQL/Program.cs" Line="29" Column="19" />
+      <File FileName="MapReduceSQL/Program.cs" Line="44" Column="4" />
+      <File FileName="MapReduceSQL/MongoSample.cs" Line="42" Column="64" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />

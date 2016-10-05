@@ -42,6 +42,10 @@ namespace MapReduceSQL
 				Console.WriteLine (element);
 			}
 
+
+			//Test MapReduce with MongoDB 
+			MongoSample.testMongo ();
+
 		}
 
 	}
