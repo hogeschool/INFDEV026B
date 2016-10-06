@@ -44,7 +44,7 @@ namespace MapReduceSQL
 
 
 			//Test MapReduce with MongoDB 
-			MongoSample.testMongo ();
+			//MongoSample.testMongo ();
 
 		}
 
