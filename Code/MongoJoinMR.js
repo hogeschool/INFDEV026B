@@ -18,16 +18,20 @@ movies_map = function() {
 r = function(key, values) {
   var result = {
       name : "",
-      title : [] 
+      titles : [] 
     };
 
     values.forEach(function(value) {
         if(value.name != null) {
             result.name = value.name;
         }
-         if(value.title != null) {
-            result.title.push(value.title);
+        if(value.title != null) {
+            result.titles.push(value.title);
         }
+        if(value.titles != null) {
+            value.titles.forEach( function(title) {result.titles.push(title)});
+        }
+
     });
     return result;
    
