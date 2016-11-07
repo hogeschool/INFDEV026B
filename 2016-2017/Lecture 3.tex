@@ -278,7 +278,7 @@ COMMIT;
 		\item Transaction 1 reads the energy and computes the increment, saving it in variable B.
 		\item Transaction 2 reads the energy, writes it and commits.
 		\item Transaction 1 reads the energy again getting a different result.
-		\item \textbf{Problem:} Transaction 2 reads the same value and gets two different results.
+		\item \textbf{Problem:} Transaction 1 reads the same value and gets two different results.
 	}\end{slide}
 	
 \SlideSubSection{Write/Write}
