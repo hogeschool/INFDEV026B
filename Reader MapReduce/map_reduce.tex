@@ -1,0 +1,48 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[top=3cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\author{Francesco Di Giacomo}
+\date { }
+\title{Map-Reduce Paradigm}
+\usepackage{listings}
+\lstset{
+basicstyle=\ttfamily\footnotesize,
+frame=tlrb,
+mathescape=true,
+showstringspaces=false,
+showspaces=false,
+showstringspaces = false,
+breaklines=true,
+tabsize=2}
+\newcommand{\valseq}[1]{$\lbrace$ #1 $\rbrace$}
+\newcommand{\tuple}[2]{$t_{#1}$[#2]}
+\newcommand{\fdep}[2]{#1 $\rightarrow$ #2}
+
+\begin{document}
+	\maketitle
+	\section{Introduction}
+	\label{sec:intro}
+	
+	\section{Background}
+	\label{sec:background}
+	\input{Sections/background}
+		
+	\section{The Map Function}
+	\label{sec:map}
+	\input{Sections/map}
+	
+	\section{The Reduce Function}
+	\label{sec:reduce}
+	\input{Sections/reduce}
+
+\end{document}

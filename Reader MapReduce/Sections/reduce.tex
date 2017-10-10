@@ -1,0 +1,175 @@
+Let us consider the query
+
+\begin{lstlisting}[caption = Example query for Reduce, label = code:reduce_query]
+SELECT SUM(salary)
+FROM employee
+WHERE salary > 1500
+\end{lstlisting}
+
+\noindent
+with what we have now we are able to evaluate the \texttt{WHERE} part and to select some of the attributes but not to compute the sum. We cannot compute the sum with \texttt{Map} because the return type of \texttt{Map} is a collection while the sum returns a single value. We need something that is able to apply an operation to each element of the collection and accumulate (or aggregate) the result. At this purpose, let us consider first the specific code for two examples, one that computes the concatenation of the string conversion of a sequence of numbers, and the other that sums the salaries of a collection of employees:
+
+\begin{minipage}[t]{0.45\textwidth}
+	\begin{lstlisting}[numbers = left, label = code:reduce_comparison_left, caption = Code to concatenate the string representations of numbers]
+static string Concat<T>(IEnumerable<T> l)
+{
+	string c = "";
+	for (int i = 0; i < l.Count(); i++)
+	{
+		c = c + l.ElementAt(i).ToString();
+	}
+	return c;
+}
+	\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.45\textwidth}
+	\begin{lstlisting}[numbers = left, label = code:reduce_comparison_right, caption = Code to compute the sum of the salaries of the employees]
+static double SumSalary(IEnumerable<Employee> employeeTable)
+{
+	double sum = 0;
+	for (int i = 0; i < employeeTable.Count() ; i++)
+	{
+		sum = sum + employeeTable.ElementAt(i).Salary;
+	}
+	return sum;
+}
+	\end{lstlisting}
+\end{minipage}
+
+\noindent
+Let us try to pinpoint the differences between the two functions and to recycle their pattern (which is the same). both functions share the following behaviour
+
+\begin{enumerate}[noitemsep]
+	\item They initialize a variable containing the result (accumulator).
+	\item For all elements of the collection they update the accumulator by applying an operation involving the accumulator and an element of the collection.
+	\item They return the final value of the accumulator.
+\end{enumerate}
+
+\noindent
+First of all, let us look at the types of the method declaration. Listing \ref{code:reduce_comparison_left} returns a \texttt{string} while Listing  \ref{code:reduce_comparison_right} returns \texttt{double}. The type of the argument of Listing \ref{code:reduce_comparison_left} is \texttt{IEnumerable<T>} while the one of Listing \ref{code:reduce_comparison_right} is \texttt{IEnumerable<Employee>}. Thus we can say that our \texttt{Reduce} function returns a generic type \texttt{T2} and takes as input a \texttt{IEnumerable<T1>}. At line 3 both functions initialize an accumulator containing the result with a different value. This value must be passed as input to \texttt{Reduce} because it is specific of the operation we want to execute. This is not enough: at line 6 both functions run a completely different operation that updates the accumulator. Thus, analogously to what we did for \texttt{Map}, we pass a function as argument that is able to perform the calculation necessary to update the accumulator. So \texttt{Reduce} takes two extra arguments, the initial value of the accumulator, whose type is \texttt{T2}, and the operation to execute. This is a lambda taking as input the accumulator itself and an element of the input collection, and returns the updated accumulator, thus its type is \texttt{Func<T2, T1, T2>}. The definition of the \texttt{Reduce} becomes then
+
+\begin{lstlisting}
+public static T2 Reduce<T1, T2>(IEnumerable<T1> collection, T2 init, Func<T2, T1, T2> operation)
+{
+	T2 result = init;
+	for (int i = 0; i < collection.Count(); i++)
+	{
+		result = operation(result, collection.ElementAt(i));
+	}
+	return result;
+}
+\end{lstlisting}
+
+\noindent
+Let us now implement the two functions above with \texttt{Reduce}. The first one takes as input a collection of numbers and concatenates their string representations. Thus the input will contain a collection of numbers, the accumulator will be set to \texttt{""}, and the lambda will take the accumulator and a number, and add the string representation of the number to the accumulator.
+
+\begin{lstlisting}
+string concatenation = MapReduce.Reduce(numbers, "", (accumulator, x) => accumulator + x.ToString());
+\end{lstlisting}
+
+In order to compute the sum of the salaries we take as input the collection of employees, we initialize the accumulator to 0.0, and we pass a function that adds to the accumulator each salary.
+
+\begin{lstlisting}
+double salarySum = MapReduce.Reduce(employeeTable, 0.0, (accumulator,e) => accumulator + e.Salary);
+\end{lstlisting}
+
+\noindent
+At this point we are capable of implementing the query in Listing \ref{code:reduce_query}. We first filter the collection with \texttt{Where} and then we compute the sum with \texttt{Reduce}.
+
+\begin{lstlisting}
+IEnumerable<Employee> filtered = MapReduce.Where(employeeTable, e => e.Salary > 1500);
+double filteredSum = MapReduce.Reduce(filtered, 0.0, (accumulator, e) => accumulator + e.Salary);
+\end{lstlisting}
+
+At this point we have \texttt{Map}, \texttt{Reduce}, and \texttt{Where} and we are able to implement a full SQL queries. Moreover we have clearly estabilished that everything works as result of black magic rituals. But at this point a careful reader would have noted that the title of this document is \texttt{Map-Reduce}, and not \texttt{Map-Reduce-Where}. In other words, we have an ``intruder'': the function \texttt{Where}. But would it be possible to implement \texttt{Where} in terms of \texttt{Reduce}? Keep reading and you will find out.
+
+\subsection{Where is Reduce}
+In the previous section we showed that \texttt{Map-Reduce-Where} is equivalent to SQL. We have also left the open question about whether it is possible to implement \texttt{Where} in terms of \texttt{Reduce}, because the \texttt{Where} function is something extra. We will answer this question right now.
+
+To express the \texttt{Where} in terms of \texttt{Reduce} we must define the data structure for the accumulator, its initial value, and the update function for the accumulator. \texttt{Where} returns a new collection containing values filtered from the input according to a condition. Thus the accumulator will be a collection. Its initial value is an empty collection: the filter might remove, as an extreme case, all the elements from the original collection if none satisfies the condition. The lambda takes as input the result collection and each element of the input collection and adds an element if it satisfies the predicate. Thus let us consider again the query in Listing \ref{code:where_query}, we implement the query as follows:
+
+\begin{lstlisting}
+IEnumerable<Employee> filteredWithReduce =
+	MapReduce.Reduce(
+		employeeTable,
+		new List<Employee>(),
+		(queryResult, e) =>
+			{
+				if (e.Salary > 1500)
+					queryResult.Add(e);
+				return queryResult;
+			});
+var data = MapReduce.Map(filteredWithReduce,
+	employee =>
+		{
+			return new
+			{
+				Name = employee.Name,
+				Surname = employee.Surname
+			};
+		});
+\end{lstlisting}
+
+Note that the lambda passed to \texttt{Reduce} checks the condition as well, and adds the result only if the condition is met. This shows that only with \texttt{Map-Reduce} we can build a SQL query. After \texttt{Reduce} is run we use \texttt{Map} to select only the attributes that we want in the result. At this point you would think it is over, but there is more: in the next section we will discover that \texttt{Reduce} is even more powerful.
+
+\subsection{Map is Reduce}
+In the previous section we explained how to implement \texttt{Where} using \texttt{Reduce}. But we can do more. We can implement \texttt{Map} with \texttt{Reduce} as well.
+
+The result of \texttt{Map} is a collection, so again the accumulator used in \texttt{Reduce} will be a collection. The initial value of the collection is again an empty collection. The lambda takes each element of the input collection, applies the transformation on each element, and adds it to the accumulator. For instance, the query
+
+\begin{lstlisting}
+SELECT name, surname
+FROM employee
+\end{lstlisting}
+
+\noindent
+becomes
+
+\begin{lstlisting}
+var dataWithReduce =
+	MapReduce.Reduce(employeeTable,
+		new List<dynamic>(),
+		(queryResult, e) =>
+			{
+			queryResult.Add(
+				new
+				{
+					Name = e.Name,
+					Surname = e.Surname
+				});
+		return queryResult;
+	});
+\end{lstlisting}
+
+Note that we have to assign \texttt{dynamic} to the generic argument because we are using an anonymous type for the result, so we cannot know its type at compile time.
+
+The query
+
+\begin{lstlisting}
+SELECT name, surname
+FROM employee
+WHERE salary > 1500
+\end{lstlisting}
+
+\noindent
+becomes instead
+
+\begin{lstlisting}
+var filterAndProjectionWithReduce =
+	MapReduce.Reduce(employeeTable,
+	new List<dynamic>(),
+	(queryResult, e) =>
+	{
+		if (e.Salary > 1500)
+			queryResult.Add(
+				new
+				{
+					Name = e.Name,
+					Surname = e.Surname
+				});
+		return queryResult;
+	});
+\end{lstlisting}
+
+\noindent
+For convenience, we keep using two separate functions, \texttt{Map} and \texttt{Reduce}, but only \texttt{Reduce} will be enough to build a language equivalent to SQL.

@@ -1,0 +1,327 @@
+In order to understand the idea behind the map function, let us proceed with some examples: assume we want to implement a simple function that squares the elements of an array of integer numbers without changing the input array. We must create a result array with the same size as the input one. Then we must scan the whole input array, multiply each element by itself, and copy the result into the corresponding element in the output array.
+
+\begin{lstlisting}
+static int Square(int[] l)
+{
+  int[] squares = new int[l.Length];
+  for (int i = 0; i < l.Length; i++)
+  {
+    squares[i] = l[i] * l[i];
+  }
+  return squares;
+}
+\end{lstlisting}
+
+Now let us make a function that converts all the elements of an array into their string representation. This time the output will be an array of strings and the input an array with generic type \texttt{T}.
+
+\begin{lstlisting}
+static string[] Convert<T>(T[] numbers)
+{
+  string[] result = new string[numbers.Length];
+  for (int i = 0; i < numbers.Length; i++)
+  {
+    result[i] = numbers.ToString();
+  }
+  return result;
+}
+\end{lstlisting}
+
+Now let us make a more complex example. Let us assume we have the representation of an employee of a company database through the following class:
+
+\begin{lstlisting}
+class EmployeeTuple
+{
+  //id, name, surname, sex, salary
+  public Tuple<int, string, string, char, double> Tuple 
+    { get; set; }
+
+  public EmployeeTuple(Tuple<int, string, string, char, double> tuple)
+  {
+    Tuple = tuple;
+  }
+}
+\end{lstlisting}
+
+We use a tuple because, by definition, the rows of a table in a database are ordered sequences of values (indeed they are often called tuples as well). Let us now assume that the company wants to raise the monthly salary of all employees by 10\%. The table can be represented as a list of employees. The class definition is the following:
+
+\begin{lstlisting}
+class EmployeeTuple
+{
+  public Tuple<int, string, string, char, double> Tuple 
+    { get; set; }
+
+  public EmployeeTuple(int id, string name, string surname, char sex, double salary)
+  {
+    Tuple = new Tuple<int, string, string, char, double>(id, name, surname, sex, salary);
+  }
+}
+\end{lstlisting}
+
+Now the function that raises the salary is analogous to the other two, except that we insert a new tuple with the modified salary.
+
+\begin{lstlisting}
+static List<EmployeeTuple> RaiseSalary(List<EmployeeTuple> employees)
+{
+  List<EmployeeTuple> result = new List<EmployeeTuple>();
+  for (int i = 0; i < employees.Count; i++)
+  {
+		result[i] = new EmployeeTuple
+		(
+			employees[i].Tuple.Item1,
+			employees[i].Tuple.Item2,
+			employees[i].Tuple.Item3,
+			employees[i].Tuple.Item4,
+			employees[i].Tuple.Item5 + employees[i].Tuple.Item5 * 0.1);
+	}
+	return result;
+}
+\end{lstlisting}
+
+Finally, let us assume that we want to change the representation of an employee to have a more convenient structure, i.e. an object with some fields. The class definition will then be:
+
+\begin{lstlisting}
+class Employee
+{
+	public int Id { get; set; }
+	public string Name { get; set; }
+	public string Surname { get; set; }
+	public char Sex { get; set; }
+	public double Salary { get; set; }
+
+	public Employee(int id, string name, string surname, char sex, double salary)
+	{
+		Id = id;
+		Name = name;
+		Surname = surname;
+		Sex = sex;
+		Salary = salary;
+	}
+}
+\end{lstlisting}
+
+If we want to implement the raise function we have to make a new overload for the method
+
+\begin{lstlisting}
+static List<Employee> RaiseSalary(List<Employee> employees)
+{
+	List<Employee> result = new List<Employee>();
+	for (int i = 0; i < employees.Count; i++)
+	{
+		result.Add(new Employee
+		(
+		employees[i].Id,
+		employees[i].Name,
+		employees[i].Surname,
+		employees[i].Sex,
+		employees[i].Salary + employees[i].Salary * 0.1));
+	}
+	return result;
+}
+\end{lstlisting}
+
+At this point it should appear clear that we are basically doing the same thing every time except for minor differences. All these functions exhibit the same pattern:
+
+\begin{enumerate}[noitemsep]
+	\item They take as input a collection of elements.
+	\item They initialize a collection for the result.
+	\item They iterate the whole collection and apply a transformation to each element.
+	\item They assign the result of the transformation to the corresponding element in the result collection.
+	\item They return the result collection containing the transformed elements.
+\end{enumerate}
+
+Software engineering principles suggest that, whenever a pattern in the code is detected, this should be captured into a single computational unit and not repeated in different versions (as we did above). What we will try to do now, is to write a single function that captures the pattern of all these functions. Let us now compare two of the functions above:
+
+\begin{minipage}[t]{0.45\textwidth}
+	\begin{lstlisting}[numbers = left, label = code:map_comparison_left, caption = Code to raise the salary]
+	static List<Employee> RaiseSalary(List<Employee> employees)
+	{
+		List<Employee> result = new List<Employee>();
+			for (int i = 0; i < employees.Count; i++)
+			{
+				result.Add(new Employee
+				(
+				employees[i].Id,
+				employees[i].Name,
+				employees[i].Surname,
+				employees[i].Sex,
+				employees[i].Salary + employees[i].Salary * 0.1));
+			}
+		return result;
+	}
+	\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.45\textwidth}
+	\begin{lstlisting}[numbers = left, label = code:map_comparison_right, caption = Code to convert numbers into strings]
+	static string[] Convert<T>(T[] numbers)
+	{
+		string[] result = new string[numbers.Length];
+			for (int i = 0; i < numbers.Length; i++)
+			{
+				result[i] = numbers.ToString();
+			}
+		return result;
+	}
+	\end{lstlisting}
+\end{minipage}
+
+\noindent
+The declaration of the method (line 1) differs only in the return type and the type of the input argument. In Listing \ref{code:map_comparison_left} the method returns a \texttt{List<Employee>} while in Listing \ref{code:map_comparison_right} it returns a \texttt{string[]}. This might suggest that the generalization, which we conveniently call \texttt{Map}, is capable of returning a generic collection that is iteratable. Moreover, the first function takes as input a \texttt{List<Employee>} while the second takes \texttt{int[]}. This suggests that \texttt{Map} takes as argument another generic collection whose generic type is different from that of the result.
+The loop is always identical in all the different versions, so it can be kept as it is. The transformation is, however, completely different in all the versions. But what if the \texttt{Map} took as input the transformation to apply to each element? In this way we could pass the specific transformation to use when we call \texttt{Map} and the code in the method body would simply use it. We follow this idea and give the following definition for the function:
+
+\begin{lstlisting}
+static class MapReduce
+{
+	public static IEnumerable<T2> Map<T1, T2>(IEnumerable<T1> collection, Func<T1, T2> transformation)
+	{
+		T2[] result = new T2[collection.Count()];
+		for (int i = 0; i < collection.Count(); i++)
+		{
+			result[i] = transformation(collection.ElementAt(i));
+		}
+		return result;
+	}
+}
+\end{lstlisting}
+
+\noindent
+How do we use this function? We can create two different collections for our test, one containing employees and one containing integer numbers. The function passed as argument to the \texttt{Map} will contain the details of the transformation. For the employee it creates a new \texttt{Employee} instance with the same values of the input except the \texttt{Salary}, which is increased by 10\% as required. The function for the conversion of numbers into strings will simply execute the conversion.
+
+\begin{lstlisting}
+int[] numbers = { 3, -1, 4, -20, 6 };
+List<Employee> employeeTable =
+	new List<Employee>(new Employee[]
+	{
+		new Employee(3952, "Frank", "Moses", 'M', 2500.50),
+		new Employee(1403, "John", "Ford", 'M', 1200.50),
+		new Employee(3433, "Michelle", "Brown", 'F', 3250.25),
+		new Employee(3540, "Daniel", "Smith", 'M', 2500.50)
+	});
+IEnumerable<Employee> raised = MapReduce.Map(employeeTable,
+	employee =>
+	{
+		return 
+			new Employee(
+			employee.Id,
+			employee.Name,
+			employee.Surname,
+			employee.Sex,
+			employee.Salary + employee.Salary * 0.1);
+	});
+IEnumerable<string> converted = MapReduce.Map(numbers, x => x.ToString());
+\end{lstlisting}
+
+In order to be absolutely sure that this works not because of the doing of an evil spirit inhabiting our computer who will ask our soul in exchange of the correctness of the execution, but rather thanks to our ingenuity, we will try to check step-by-step what happens when calling \texttt{Map} with the conversion function.
+
+First of all, let us check that the types actually make sense: the first argument passed to the function is the collection of elements to convert, which has type \texttt{int[]}, so the generic type \texttt{T1} will be replaced by \texttt{int}. The lambda that we pass to the function takes an element of type \texttt{int} and converts it to a string, so its type is \texttt{Func<int,string>}. Thus the generic \texttt{T2} will be replaced by \texttt{string}. The function thus returns a \texttt{string[]}, which by polymorphism is equivalent to \texttt{IEnumerable<string>}.
+
+The function is called by passing the array \texttt{\{ 3, -1, 4, -20, 6 \}} as argument and the lambda \texttt{x => x.ToString()}. At line 3 the function creates an array of type \texttt{string[]} (remember the replacement of generics explained above). At each iteration of the loop the lambda is applied to each element of the input, with the following results:
+
+\begin{lstlisting}[mathescape = true]
+1. x => x.ToString $\rightarrow$ 3.ToString() $\rightarrow$ "3"
+2. x => x.ToString $\rightarrow$ -1.ToString() $\rightarrow$ "-1"
+3. x => x.ToString $\rightarrow$ 4.ToString() $\rightarrow$ "4"
+4. x => x.ToString $\rightarrow$ -20.ToString() $\rightarrow$ "-20"
+5. x => x.ToString $\rightarrow$ -6.ToString() $\rightarrow$ "-6"
+\end{lstlisting}
+
+\noindent
+These results are stored into the output array, which is then returned as result of \texttt{Map}. The reader can verify, as an exercise, the typing and the steps necessary to evaluate the call of \texttt{Map} with \texttt{List<Employee>}.
+
+\subsection{Map is Select}
+\label{subsec:select}
+In this section we will show that the \texttt{Map} function behaves like the \texttt{Select} statement in SQL-like languages. Let us consider the salary raise operation performed earlier: the equivalent query in SQL would be
+
+\begin{lstlisting}
+SELECT id, name, surname, sex, salary + salary * 0.1
+FROM employee
+\end{lstlisting}
+
+\noindent
+Now someone could say that this is not enough because we are not able to select a subset of attributes using \texttt{Map}, as the real select does, because we are outputting all the attributes of each row (even if their value was changed). For example let us consider the SQL query
+
+\begin{lstlisting}
+SELECT name, surname
+FROM employee
+\end{lstlisting}
+
+\noindent
+how can we use \texttt{Map} to get the same result, so a collection of objects containing only \texttt{Name} and \texttt{Surname}? The answer is using a lambda that transforms every \texttt{Employee} instance into an instance of a different type containing only \texttt{Name} and \texttt{Surname}. In order to do this, we use anonymous types.
+
+\begin{lstlisting}
+var data = MapReduce.Map(employeeTable,
+	employee =>
+		{
+			return new
+			{
+				Name = employee.Name,
+				Surname = employee.Surname
+			};
+	});
+\end{lstlisting}
+
+In this way every element of the input list will be mapped to a different element that contains only the attributes that we want to keep as result of a query.
+
+\subsection{Filtering the result}
+\label{subsec:filter}
+At this point, we have a function that is equivalent to the SELECT statement of a query, but we have no way of filtering the rows that appear in the result. It is not possible to implement \texttt{WHERE} with \texttt{Map}. Just think about the fact that, by definition, the result of \texttt{Map} always contains the same amount of elements as the input, while the result of \texttt{WHERE} contains an amount of elements that is smaller or equal than those in the input collection.
+
+By following a method analogous to what done for the \texttt{Map} we can define a function \texttt{Where}. This function takes a collection with generic type \texttt{T} as input and checks a condition for all elements of the collection. If the condition is met the element is put in the result, otherwise it is discarded.
+
+One common mistake is to think that the condition can be expressed with a boolean expression. For example, let us consider the query
+
+\begin{lstlisting}[caption = Query with filtering, label = code:where_query]
+SELECT name, surname
+FROM employee
+WHERE salary > 1500
+\end{lstlisting}
+
+\noindent
+If \texttt{Where} were to be called with a boolean expression we would have something like
+
+\begin{lstlisting}
+IEnumerable<Employee> filtered = Where(employeeTable, salary > 1500)
+\end{lstlisting}
+
+\noindent
+but at this point the boolean expression would be evaluated, resulting into either true or false, and then this value would be passed to the function. Thus, the condition would immediately be always true or false for all the elements of the collection. The condition is thus a lambda with type \texttt{Func<T, bool>}, so it is a function that takes an element of the same type of those in the input collection and returns either true or false. This allows to dynamically evaluate the condition for all the elements in the collection. The definition of \texttt{Where} is thus the following:
+
+\begin{lstlisting}
+public static IEnumerable<T> Where<T>(IEnumerable<T> collection, 	Func<T, bool> condition)
+{
+	List<T> result = new List<T>();
+	for (int i = 0; i < collection.Count(); i++)
+	{
+		if (condition(collection.ElementAt(i)))
+			result.Add(collection.ElementAt(i));
+	}
+	return result;
+}
+\end{lstlisting}
+
+\noindent
+The query above becomes then
+
+\begin{lstlisting}
+IEnumerable<Employee> filtered = MapReduce.Where(employeeTable, e => e.Salary > 1500);
+data = MapReduce.Map(filtered,
+	employee =>
+	{
+		return new
+		{
+			Name = employee.Name,
+			Surname = employee.Surname
+		};
+	});
+\end{lstlisting}
+
+\noindent
+What we miss now is the possibility of running aggregation functions, such as in
+
+\begin{lstlisting}
+SELECT SUM(salary)
+FROM employee
+\end{lstlisting}
+
+
+
+
