@@ -1,0 +1,9 @@
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceForPros\MapReduceForPros\bin\Debug\MapReduceForPros.exe.config
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceForPros\MapReduceForPros\bin\Debug\MapReduceForPros.exe
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceForPros\MapReduceForPros\bin\Debug\MapReduceForPros.pdb
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceForPros\MapReduceForPros\obj\Debug\MapReduceForPros.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceForPros\MapReduceForPros\obj\Debug\MapReduceForPros.exe
+C:\Users\Francesco\Documents\Visual Studio 2015\Projects\MapReduceForPros\MapReduceForPros\obj\Debug\MapReduceForPros.pdb
+C:\Users\Francesco\Documents\GitHub\INFDEV03-5\Reader MapReduce\Code\MapReduceForPros\MapReduceForPros\bin\Debug\MapReduceForPros.exe.config
+C:\Users\Francesco\Documents\GitHub\INFDEV03-5\Reader MapReduce\Code\MapReduceForPros\MapReduceForPros\obj\Debug\MapReduceForPros.exe
+C:\Users\Francesco\Documents\GitHub\INFDEV03-5\Reader MapReduce\Code\MapReduceForPros\MapReduceForPros\obj\Debug\MapReduceForPros.pdb
