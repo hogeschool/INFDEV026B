@@ -1,1 +1,131 @@
 This section provides some background knowledge necessary to understand the topic of map-reduce. We mainly introduce features of C\# that are necessary for the implementation.
+
+\subsection{Properties}
+C\# allows to define properties in classes. Properties allow to use the syntax of variable assignments while, at the same time, restricting the direct access to fields of a class. Properties allows to define a field and at the same time its getter and setter methods. An automatic property is defined in the following way
+
+\begin{lstlisting}
+public class Foo
+{
+	public T FooProperty<T> { get; set; }
+}
+\end{lstlisting}
+
+\noindent
+The compiler will automatically create a private field associated to \texttt{FooPropert} and generate the getter and setter for it. The property can appear directly as right argument of a variable assignment, like
+
+\begin{lstlisting}
+T f = myFoo.FooProperty;
+\end{lstlisting}
+
+\noindent
+In this case the getter of the property is called. We can also set a property by using variable assignment, like
+
+\begin{lstlisting}
+myFoo.FooProperty = x;
+\end{lstlisting}
+
+\noindent
+This will call the setter of \texttt{FooProperty} by passing the input \texttt{x}.
+
+It is also possible to define custom getters and setters that are less trivial. For example the following getter returns the value of the property and adds 1 to it.
+
+\begin{lstlisting}
+public clas Bar
+{
+	private int barField;
+	
+	public int BarProperty
+	{
+		get
+		{
+			int old = barField;
+			barField++;
+			return old;
+		}
+	}
+}
+\end{lstlisting}
+
+\noindent
+It is possible also to define custom setters in the same way. The setter uses a special identifier \texttt{value} which contains the value to set. The following setter adds an offset of 10 to the value. 
+
+\begin{lstlisting}
+public clas Bar
+{
+	private int barField;
+	
+	public int BarProperty
+	{
+		get
+		{
+			int old = barField;
+			barField++;
+			return old;
+		}
+		set
+		{
+			barField = value + 10;
+		}
+	}
+}
+\end{lstlisting}
+
+\noindent
+It is not mandatory to specify both getters and setters for a property. It is also possible to alter the access to either the getter or the setter by putting an access modifier different than the one used by the property just before the keyword \texttt{get} or \texttt{set}.
+
+\begin{lstlisting}
+public class Bar
+{
+	public int BarProperty
+	{
+		get { ... }
+		private set { ... } 
+	}
+}
+\end{lstlisting}
+
+\subsection{Anonymous types}
+In C\# it is possible to create anonymous types to instantiate a class without explicitly declare it in the program. For example, the following creates an anonymous type containing two strings:
+
+\begin{lstlisting}
+var foo =
+	new
+	{
+	  Name = "Jack",
+	  Surname = "Sparrow"
+	}
+\end{lstlisting}
+
+\noindent
+Note that the keyword \texttt{var} is used in C\# to let the compiler infer the type of the variable. If it is necessary to provide the type of a generic data structure that contains instances of an anonymous type, then we use the keyword \texttt{dynamic } to let the compiler detect the type at run-time, rather than at compile-time. This is necessary because we cannot know the type name of an anonymous type (it is indeed anonymous).
+
+\begin{lstlisting}
+var foos = new List<dynamic>();
+foos.Add(new { Name = "Jack", Surname = "Sparrow" });
+foos.Add(new { Name = "Edward", Surname = "Teach" });
+foos.Add(new { Name = "Edward", Surname = "Kenway" });
+foos.Add(new { Name = "Kathryn", Surname = "Janeway" });
+\end{lstlisting}
+
+\subsection{Lambdas}
+In C\# it is possible to treat functions as values and use them as arguments of other functions. In order to define an anonymous function (or lambda), it is possible to use the built-in type \texttt{Func}. \texttt{Func} is a type that takes \texttt{N} generic arguments. The first \texttt{N - 1} generic arguments contains the type of the function arguments, while the last one contains the return type. For example the following function computes the integer logarithm of two numbers:
+
+\begin{lstlisting}
+Func<int, int, int> integerLog =
+  (n,_base) =>
+  {
+    int i = 0;
+    while (n > 0)
+    {
+    	n = n / _base;
+    	i = i + 1;
+    }
+    return i;
+  };
+\end{lstlisting}
+
+You can also write a lambda whose body is just an expression in the following way:
+
+\begin{lstlisting}
+Func<int, int, int> add = (x,y) => x + y
+\end{lstlisting}

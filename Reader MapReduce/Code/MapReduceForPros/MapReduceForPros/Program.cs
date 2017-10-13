@@ -210,8 +210,19 @@ namespace MapReduceForPros
                                });
                            return queryResult;
                          });
-      IEnumerable<Tuple<Employee, CompanyCar>> employeecars =
+      IEnumerable<Tuple<Employee, CompanyCar>> employeeCars =
         MapReduce.Join(employeeTable, carTable, t => t.Item1.Id == t.Item2.EmployeeId);
+      var employeeCarsProjected =
+        MapReduce.Map(employeeCars,
+                      t =>
+                      {
+                        return new
+                        {
+                          Name = t.Item1.Name,
+                          Surname = t.Item1.Surname,
+                          CarModel = t.Item2.Model
+                        };
+                      });
     }
 
     static List<EmployeeTuple> RaiseSalary(List<EmployeeTuple> employees)

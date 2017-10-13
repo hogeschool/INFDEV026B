@@ -173,3 +173,81 @@ var filterAndProjectionWithReduce =
 
 \noindent
 For convenience, we keep using two separate functions, \texttt{Map} and \texttt{Reduce}, but only \texttt{Reduce} will be enough to build a language equivalent to SQL.
+
+\subsection{Join is Reduce}
+Up to this point, we are able to use \texttt{Map-Reduce} to implement any SQL query on \underline{one} table. But what if we want to retrieve information frm multiple tables?
+
+Let us consider the example of the same employee table as above, and an additional data structure representing company cars. Each car can be assigned to at most one employee, but a single employee can use more than one company car. The car is represented by a plate number, a model, and a reference to the employee it is assigned to (his ID). Imagine that we want to retrieve the information about the name, surname, and model of car assigned to each employee. The corresponding SQL query would be
+
+\begin{lstlisting}
+SELECT e.name, e.surname, c.model
+FROM Employee e, Car c
+WHERE e.id = c.id
+\end{lstlisting}
+
+\noindent
+We will now show that only with Map-Reduce it is also possible to implement a join. Recalling the definition of join, this is simply the Cartesian Product of the two tables followed by a filter applied to the result. Remember that the Cartesian Product takes each row from the first table and combines it with all the rows from the second table. Our \texttt{Join} function will thus take two tables and a condition defined as a lambda in the same fashion of what we did for \texttt{Where}. It will then combine each row of the first table with all the rows of the second table and put the combination in the result only if the condition is met.
+
+Let us first give the definition of the class representing the car:
+
+\begin{lstlisting}
+class CompanyCar
+{
+	public string Plate { get; set; }
+	public string Model { get; set; }
+	public int EmployeeId { get; set; }
+	public CompanyCar(string plate, string model, int employee)
+	{
+		Plate = plate;
+		Model = model;
+		EmployeeId = employee;
+	}
+}
+\end{lstlisting}
+
+\noindent
+Now let us think about the signature of the function for \texttt{Join}: the function takes as input two different tables (or collections) with different element types. Thus the function will have two generic type arguments, \texttt{T1} and \texttt{T2}. The function returns a collection containing the combinations of each row of the first table with all the rows of the second table. Each of these combinations can be represented by a pair containing an element from the first list and an element from the second list. Thus the returned type will be \texttt{IEnumerable<Tuple<T1,T2>>}. The \texttt{Join} also takes a condition to filter out some of these combinations. The condition is a lambda that takes a combination and returns a boolean, thus its type is \texttt{Func<Tuple<T1, T2>, bool>}.
+
+The accumulator to use in the reduce will thus be a list containing the combinations created by \texttt{Join} and its initial value is an empty list. In the lambda passed to \texttt{Join} we take each element from the first table and create its combinations with all the rows of the second table.
+
+To do this, let us focus first on how to create the combination of one row of the first table with the rows of the second table. This can be done with \texttt{Reduce} itself by taking as input the second table, initializing the accumulator to en empty list, and adding the pair containing the elements from both the first table and the second if the condition is met. Assuming that \texttt{x} is the variable containing the row from the first table, the following code creates the combination between \texttt{x} and all the rows of the second table, filtered according to the condition:
+
+\begin{lstlisting}
+List<Tuple<T1, T2>> combination =
+	Reduce(table2, new List<Tuple<T1, T2>>(),
+		(c, y) =>
+		{
+			Tuple<T1, T2> row = new Tuple<T1, T2>(x, y);
+			if (condition(row))
+				c.Add(row);
+			return c;
+		});
+\end{lstlisting}
+
+\noindent
+Now this call can be used in the lambda of the \texttt{Reduce} we use to join the whole table, obtaining:
+
+\begin{lstlisting}[numbers = left, caption = Join with Reduce, label = code:join_with_reduce]
+public static IEnumerable<Tuple<T1, T2>> Join<T1, T2>(IEnumerable<T1> table1, IEnumerable<T2> table2, Func<Tuple<T1, T2>, bool> condition)
+{
+	return
+		Reduce(table1, new List<Tuple<T1, T2>>(),
+		(queryResult, x) =>
+			{
+				List<Tuple<T1, T2>> combination =
+					Reduce(table2, new List<Tuple<T1, T2>>(),
+						(c, y) =>
+						{
+							Tuple<T1, T2> row = new Tuple<T1, T2>(x, y);
+							if (condition(row))
+								c.Add(row);
+							return c;
+						});
+				queryResult.AddRange(combination);
+				return queryResult;
+			});
+}
+\end{lstlisting}
+
+\noindent
+In Listing \ref{code:join_with_reduce} line 4 calls \texttt{Reduce} to perform the whole join, that is the combination of each row from \texttt{table1} with all the rows of \texttt{table2}. At line 8 we call the \texttt{Reduce} to create the combination of a single row from \texttt{table1} with all the rows of \texttt{table2}, filtered according the \texttt{condition} of \texttt{Join}. At line 11 we create the pair containing a row from \texttt{table1} and a row from \texttt{table2}. At line 12 we test the condition and add the combination only if the condition is true. At line 16 we add the combinations created at line 8 to the accumulator.
