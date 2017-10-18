@@ -1,4 +1,4 @@
-In order to understand the idea behind the map function, let us proceed with some examples: assume we want to implement a simple function that squares the elements of an array of integer numbers without changing the input array. We must create a result array with the same size as the input one. Then we must scan the whole input array, multiply each element by itself, and copy the result into the corresponding element in the output array.
+In order to understand the idea behind the \texttt{Map} function, let us proceed with some examples: assume we want to implement a simple function that squares the elements of an array of integer numbers without changing the input array. We must create a result array with the same size as the input one. Then we must scan the whole input array, multiply each element by itself, and copy the result into the corresponding element in the output array.
 
 \begin{lstlisting}
 static int Square(int[] l)
@@ -20,7 +20,7 @@ static string[] Convert<T>(T[] numbers)
   string[] result = new string[numbers.Length];
   for (int i = 0; i < numbers.Length; i++)
   {
-    result[i] = numbers.ToString();
+    result[i] = numbers[i].ToString();
   }
   return result;
 }
@@ -245,7 +245,7 @@ FROM employee
 \end{lstlisting}
 
 \noindent
-how can we use \texttt{Map} to get the same result, so a collection of objects containing only \texttt{Name} and \texttt{Surname}? The answer is using a lambda that transforms every \texttt{Employee} instance into an instance of a different type containing only \texttt{Name} and \texttt{Surname}. In order to do this, we use anonymous types.
+how can we use \texttt{Map} to get the same result, i.e. a collection of objects containing only \texttt{Name} and \texttt{Surname}? The answer is using a lambda that transforms every \texttt{Employee} instance into an instance of a different type containing only \texttt{Name} and \texttt{Surname}. In order to do this, we use anonymous types.
 
 \begin{lstlisting}
 var data = MapReduce.Map(employeeTable,
@@ -259,13 +259,13 @@ var data = MapReduce.Map(employeeTable,
 	});
 \end{lstlisting}
 
-In this way every element of the input list will be mapped to a different element that contains only the attributes that we want to keep as result of a query.
+This way every element of the input list will be mapped to a different element that contains only the attributes that we want to keep as result of a query.
 
 \subsection{Filtering the result}
 \label{subsec:filter}
 At this point, we have a function that is equivalent to the SELECT statement of a query, but we have no way of filtering the rows that appear in the result. It is not possible to implement \texttt{WHERE} with \texttt{Map}. Just think about the fact that, by definition, the result of \texttt{Map} always contains the same amount of elements as the input, while the result of \texttt{WHERE} contains an amount of elements that is smaller or equal than those in the input collection.
 
-By following a method analogous to what done for the \texttt{Map} we can define a function \texttt{Where}. This function takes a collection with generic type \texttt{T} as input and checks a condition for all elements of the collection. If the condition is met the element is put in the result, otherwise it is discarded.
+By following a method analogous to \texttt{Map}, we can define a method \texttt{Where}. This function takes a collection with generic type \texttt{T} as input and checks a condition for all elements of the collection. If the condition is met the element is put in the result, otherwise it is discarded.
 
 One common mistake is to think that the condition can be expressed with a boolean expression. For example, let us consider the query
 
@@ -283,7 +283,7 @@ IEnumerable<Employee> filtered = Where(employeeTable, salary > 1500)
 \end{lstlisting}
 
 \noindent
-but at this point the boolean expression would be evaluated, resulting into either true or false, and then this value would be passed to the function. Thus, the condition would immediately be always true or false for all the elements of the collection. The condition is thus a lambda with type \texttt{Func<T, bool>}, so it is a function that takes an element of the same type of those in the input collection and returns either true or false. This allows to dynamically evaluate the condition for all the elements in the collection. The definition of \texttt{Where} is thus the following:
+but at this point the boolean expression would be evaluated, resulting into either true or false, and then this value would be passed to the function. Thus, the condition would immediately be always true or false for all the elements of the collection. The condition is thus a lambda with type \texttt{Func<T, bool>}, that is a function that takes an element of the same type of those in the input collection and returns either true or false. This allows to dynamically evaluate the condition for all the elements in the collection. The definition of \texttt{Where} is thus the following:
 
 \begin{lstlisting}
 public static IEnumerable<T> Where<T>(IEnumerable<T> collection, 	Func<T, bool> condition)
@@ -299,7 +299,7 @@ public static IEnumerable<T> Where<T>(IEnumerable<T> collection, 	Func<T, bool> 
 \end{lstlisting}
 
 \noindent
-The query above becomes then
+The original query then becomes then
 
 \begin{lstlisting}
 IEnumerable<Employee> filtered = MapReduce.Where(employeeTable, e => e.Salary > 1500);

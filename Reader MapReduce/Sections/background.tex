@@ -1,7 +1,7 @@
 This section provides some background knowledge necessary to understand the topic of map-reduce. We mainly introduce features of C\# that are necessary for the implementation.
 
 \subsection{Properties}
-C\# allows to define properties in classes. Properties allow to use the syntax of variable assignments while, at the same time, restricting the direct access to fields of a class. Properties allows to define a field and at the same time its getter and setter methods. An automatic property is defined in the following way
+C\# allows to define properties in classes. Properties allow to use the syntax of variable assignments while, at the same time, restricting direct access to the fields of a class. Properties allows to define a field and at the same time its getter and setter methods. An automatic property is defined in the following way
 
 \begin{lstlisting}
 public class Foo
@@ -11,7 +11,7 @@ public class Foo
 \end{lstlisting}
 
 \noindent
-The compiler will automatically create a private field associated to \texttt{FooPropert} and generate the getter and setter for it. The property can appear directly as right argument of a variable assignment, like
+The compiler will automatically create a private field associated to \texttt{FooProperty} and generate the getter and setter for it. The property can appear directly as right argument of a variable assignment, like
 
 \begin{lstlisting}
 T f = myFoo.FooProperty;
@@ -47,7 +47,7 @@ public clas Bar
 \end{lstlisting}
 
 \noindent
-It is possible also to define custom setters in the same way. The setter uses a special identifier \texttt{value} which contains the value to set. The following setter adds an offset of 10 to the value. 
+It is also possible to define custom setters in the same way. The setter uses a special identifier \texttt{value} which contains the value to set. The following setter adds an offset of 10 to the value. 
 
 \begin{lstlisting}
 public clas Bar
@@ -71,7 +71,7 @@ public clas Bar
 \end{lstlisting}
 
 \noindent
-It is not mandatory to specify both getters and setters for a property. It is also possible to alter the access to either the getter or the setter by putting an access modifier different than the one used by the property just before the keyword \texttt{get} or \texttt{set}.
+It is not mandatory to specify both getters and setters for a property. It is also possible to alter the accessibility of either the getter or the setter by putting an access modifier different than the one used by the property just before the keyword \texttt{get} or \texttt{set}.
 
 \begin{lstlisting}
 public class Bar
@@ -108,7 +108,7 @@ foos.Add(new { Name = "Kathryn", Surname = "Janeway" });
 \end{lstlisting}
 
 \subsection{Lambdas}
-In C\# it is possible to treat functions as values and use them as arguments of other functions. In order to define an anonymous function (or lambda), it is possible to use the built-in type \texttt{Func}. \texttt{Func} is a type that takes \texttt{N} generic arguments. The first \texttt{N - 1} generic arguments contains the type of the function arguments, while the last one contains the return type. For example the following function computes the integer logarithm of two numbers:
+In C\# it is possible to treat functions as values and use them as arguments of other functions. In order to define an anonymous function (or lambda), it is possible to use the built-in type \texttt{Func}. \texttt{Func} is a type that takes \texttt{N} generic arguments. The first \texttt{N - 1} generic arguments are the type of the function arguments, while the last one is the return type. For example the following function computes the integer logarithm of two numbers:
 
 \begin{lstlisting}
 Func<int, int, int> integerLog =
