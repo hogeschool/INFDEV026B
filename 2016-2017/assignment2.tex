@@ -23,9 +23,9 @@ The company needs to store the headquarters it owns. Each headquarters is identi
 
 
 \section*{Task description}
-Create a document database in MongoDB for the described context. Create an application (in Java or C\#) that inserts random data inside the database. Strings defining names should be picked randomly inside a specified lists of names. Furthermore, the numerical data should have likely values, for example the age of an employee cannot be 1500, or the our fee 100000. Insert at least 10000 employees, and 100 projects. Your application should use a fixed random seed which can be set to generate the random data, in order to able to debug the application.
+Create an application (in Java or C\#) that inserts random data inside the relational database created in the previous assignment. Strings defining names should be picked randomly inside a specified lists of names. Furthermore, the numerical data should have likely values, for example the age of an employee cannot be 1500, or the our fee 100000. Insert at least 10000 employees, and 100 projects. Your application should use a fixed random seed which can be set to generate the random data, in order to able to debug the application.
 
-Implement the following queries using the map-reduce paradigm in MongoDB and output the data on either a GUI or the shell.
+Implement the following queries using the map-reduce paradigm in either C\# or Java, and output the data on either a GUI or the shell. Re-implement the function Map and Reduce from scratch, do not use LINQ or other pre-built libraries.
 
 \begin{enumerate}
 	\item An employee is underworking if he is working less than 5 hours on his projects, he is working normally if he is working between 5 and 20 hours, and he is overworking if he is working more than 20 hours. Output the number of employees that are overworking per project.
