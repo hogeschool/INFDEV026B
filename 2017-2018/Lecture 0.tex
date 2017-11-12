@@ -1,0 +1,485 @@
+\documentclass{beamer}
+\usetheme[hideothersubsections]{HRTheme}
+\usepackage{beamerthemeHRTheme}
+\usepackage{graphicx}
+\usepackage[space]{grffile}
+\usepackage{listings}
+\lstset{language=SQL,
+basicstyle=\ttfamily\footnotesize,
+mathescape=true,
+keywordstyle=\color{blue},
+breaklines=true}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\newcommand{\red}[1]{
+\textcolor{red}{#1}
+}
+\newcommand{\ts}{\textbackslash}
+
+\title{E-R model, Relational model, SQL}
+
+\author{ }
+
+\institute{Hogeschool Rotterdam \\ 
+Rotterdam, Netherlands}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\SlideSection{General Stuff}
+%\SlideSubSection{ME}
+%\begin{slide}{
+%\item Ahmad Omar
+%\item Email: omara@hr.nl
+%\item Github: https://github.com/hogeschool/INFDEV03-5/tree/master/2016-2017
+%\item Contact hour: Wednesday 13:30-14:30
+%\item Friday not at work 
+%}\end{slide}
+
+\SlideSubSection{Course}
+\begin{slide}{
+\item Three assignment (Relational Databases, Document Database, Graph Database)
+\item Two Exams: Written and practicum (oral check)
+}\end{slide}
+
+\SlideSubSection{Course}
+\begin{slide}{
+\item Relational databases: advantages and limitations (PostgreSQL)
+\item NoSQL databases: advantages, limitation, two cases studies (MongoDB and Neo4J)  
+\item Advance topics for big data such as Hadoop, Spark will not be discussed
+}\end{slide}
+
+
+\SlideSection{Introduction}
+\SlideSubSection{Lecture topics}
+\begin{slide}{
+\item E-R model.
+\item Relational model.
+\item SQL, and examples.
+}\end{slide}
+
+\SlideSection{Data models}
+\SlideSubSection{database design process}
+\begin{slide}{
+\item Requirements analysis 
+\pause
+\item Conceptual database design using E-R models
+\pause
+\item Logical database design (sometimes conceptual and logical are merged into one step) 
+\pause
+\item Schema refinement through normalization
+\pause
+\item Physical database design
+\pause
+\item Application and Security Design
+}\end{slide}
+
+\SlideSection{E-R model}
+\SlideSubSection{Overview}
+\begin{slide}{
+\item Highest level of database modelling.
+\item Model the conceptual aspect of the database.
+\item Far from the physical representation in the DBMS.
+}\end{slide}
+
+\SlideSubSection{Entity}
+\begin{slide}{
+\item Anything which can exist on its own on the database
+\item Consider a database for a space shooter game
+\item Starships, asteroids are entities, they have a meaning on their own
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Attributes}
+\begin{slide}{
+\item They model characteristics of the entity.
+\item \textbf{Starship:} velocity, shield, armour, weapon, [...]
+\item \textbf{Asteroid:} velocity, mass, integrity, [...]
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Relations}
+\begin{slide}{
+\item They describe the associations among entities (two or more).
+\item They have a cardinality: number of participants for each side.
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Relations - 1 : 1}
+\begin{slide}{
+\item Entity modelling a pilot and one modelling a starship.
+\item Related by ``drives''.
+\item The cardinality is 1:1 : one pilot drives at most one starship, and one starship can contain only one pilot.
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Relations - 1 : N}
+\begin{slide}{
+\item Entity modelling a starship and one modelling a weapon.
+\item Related by ``mounted''
+\item The cardinality is 1:N : a weapon can be mounted only on one starship, but a starship can mount more than one weapon.
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Relations - N : M}
+\begin{slide}{
+\item Entity modelling a starship and one modelling an asteroid.
+\item Related by ``collides with''
+\item The cardinality is N : M : several starships can collide with several asteroids.
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Keys}
+\begin{slide}{
+\item A way to uniquely identify an entity.
+\item A key is a set of attributes that have unique values among entities.
+\item \textbf{Starship:} id number.
+
+%insert picture here
+}\end{slide}
+
+\SlideSubSection{Weak entities}
+\begin{slide}{
+\item Entities which do not have a key attribute.
+\item \textbf{Asteroids:} There can be two asteroids with the same position, same mass, velocity, etc.
+
+%insert picture here
+}\end{slide}
+
+\SlideSection{Relational model}
+\SlideSubSection{Overview}
+\begin{slide}{
+\item Halfway between a conceptual model and the physical model.
+\item Contain an abstraction of physical elements.
+\item Can be easily mapped to a physical implementation in a DBMS.
+\item There are mapping rules from E-R model to the relational model.
+}\end{slide}
+
+\SlideSubSection{Relation}
+\begin{slide}{
+\item A relation is a collection of tuples.
+\item Each element of a tuple is a value taken from an attribute set.
+\item Each attribute set is identified by a name
+
+\vspace{0.5cm}
+\centering
+\begin{tabular}{|c|c|c|c|c||c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & shields & pilot & armour & integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+(38258269, "Battlestar Galactica", 3000, "Captain Jack" ,5000, 1.0)
+}\end{slide}
+
+\SlideSubSection{Keys}
+\begin{slide}{
+\item A \textit{Primary key} is a set of attributes with unique values in each tuple.
+\item A \textit{Candidate key} is the smallest set of attributes which form a superkey.
+
+\vspace{0.5cm}
+\textbf{Example:}\\
+\textbf{Candidate key:} (id, name) \\
+\textbf{Primary key:} (id)
+}\end{slide}
+
+\SlideSubSection{Keys}
+\begin{slide}{
+\item A \textit{Primary key} is the chosen key for a relation among all the candidate keys.
+\item A \textit{Foreign key} is a set of attributes in one relation which is a primary key in another relation.
+
+\vspace{0.5cm}
+\textbf{Example (Foreign key):}\\
+
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{shipid} & \underline{weaponName} \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & shields & pilot  & armour & integrity \\
+\hline
+\end{tabular}
+
+\raggedright
+\vspace{0.2cm}
+In the relation \texttt{Mounts} the attribute \texttt{shipid} is a foreign key to \texttt{Ships}.
+
+
+}\end{slide}
+
+\SlideSection{SQL}
+\SlideSubSection{Overview}
+\begin{slide}{
+\item Declarative language (``What'' not ``How''). Consists of 4 categories
+\pause
+\item Data Definition Language (DDL): used to create relations (tables).
+\item Data Manipulation Language (DML): used to insert/modify/extract data from relations (tables).
+\item Data Control Language (DCL): grant control to tables, views and database
+\item Transaction Control Language TCL:  used to create transactions and to control them. 
+}\end{slide}
+
+\SlideSubSection{SELECT-FROM}
+\begin{frame}[fragile]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & pilot & shields & armour & integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Select all ships from the game}
+\pause
+\begin{lstlisting}
+SELECT *
+FROM Ships
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{SELECT-FROM-WHERE (Selection)}
+\begin{frame}[fragile]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & pilot & shields & armour & integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Select all ships in the game whose pilot is ``William Adama''}
+\pause
+\begin{lstlisting}
+SELECT *
+FROM Ships s
+WHERE s.pilot = 'William Adama'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{SELECT-FROM-WHERE (Projection)}
+\begin{frame}[fragile]
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & pilot & shields &  armour & integrity \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the name of the ships whose pilot is ``Starbucks''}
+\pause
+\begin{lstlisting}
+SELECT s.name
+FROM Ship s
+where s.pilot = 'Starbucks'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{JOIN}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & pilot & shields & armour & integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{shipid} & \underline{weaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapons}} \\
+\hline
+\underline{name} & damage & type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the id of the ships mounting the weapon ``Stealthblade MKII''}
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT s.id
+FROM Ship s, Mounts m
+WHERE s.id = m.shipid AND 
+      m.weaponName = 'StealthBlade MKII'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{JOIN (multiple tables)}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name & pilot & shields  & armour & integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{shipid} & \underline{weaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapons}} \\
+\hline
+\underline{name} & damage & type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the name of all the weapons mounted in the ships flown by ``Apollo''}
+
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT w.name
+FROM Ship s, Mounts m, Weapon w
+WHERE s.id = m.Shipid AND 
+      m.weaponName = w.name AND
+      s.pilot = 'Apollo'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{Aggregates (SUM)}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ship}} \\
+\hline
+\underline{id} & name & pilot & shields & armour & integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{shipid} & \underline{weaponName} & Count \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapons}} \\
+\hline
+\underline{name} & damage & type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Find the total damage output of the ships flown by ``Athena''}
+
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT SUM(w.damage) AS damage
+FROM Ship s, Mounts m, Weapon w
+WHERE s.id = m.shipid AND 
+      m.weaponName = w.name AND
+      s.pilot = 'Athena'
+\end{lstlisting}
+
+\end{frame}
+
+\SlideSubSection{Aggregates (COUNT, HAVING)}
+\begin{frame}[fragile]
+
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\multicolumn{6}{|c|}{\textbf{Ships}} \\
+\hline
+\underline{id} & name  & pilot & shields & armour & integrity \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{2}{|c|}{\textbf{Mounts}} \\
+\hline
+\underline{shipid} & \underline{weaponName} \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Weapon}} \\
+\hline
+\underline{name} & damage & type \\
+\hline
+\end{tabular}
+
+\vspace{0.25cm}
+\textbf{Count all the ships having more than 3 weapons}
+
+\pause
+\begin{lstlisting}[showstringspaces=false]
+SELECT COUNT(*)
+FROM (
+ SELECT * AS ShipCount
+ FROM Ship s, Mounts m, Weapon w
+ WHERE s.id = m.shipid AND 
+      m.weaponName = w.Name
+ GROUP BY s.id
+ HAVING COUNT(*) > 3)
+                   
+\end{lstlisting}
+
+\end{frame}
+
+
+
+
+
+
+\end{document}
+
+\begin{slide}{
+\item ...
+}\end{slide}
+
+\begin{frame}[fragile]
+\begin{lstlisting}
+...
+\end{lstlisting}
+\end{frame}
