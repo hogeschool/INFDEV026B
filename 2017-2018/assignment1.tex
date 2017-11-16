@@ -6,7 +6,7 @@
 \usepackage{enumitem}
 \usepackage{ulem}
 \usepackage[official]{eurosym}
-\title{Advanced Databases \& noSQL (INFDEV03-5) \\ Assignment 1}
+\title{Advanced Databases \& noSQL (INFDEV026B) \\ Assignment 1}
 \author { }
 \date { }
 \begin{document}
@@ -23,7 +23,7 @@ The company needs to store the headquarters it owns. Each headquarters is identi
 
 
 \section*{Task description}
-Given this description implement a relational database in a chosen system (PostGres, MySQL, Microsoft SQL Server, etc.). The use of ERD is not mandatory but strongly suggested and can be used to get extra points during the assessment. The relational database must include tables in 3NF or BCNF. If it is required, show the normalization steps done for each table. For the tables that are already in 3NF or BCNF, write the proof based on the definition.
+Given this description implement a relational database in a chosen system (PostGres, MySQL, Microsoft SQL Server, etc.). The use of ERD is strongly suggested. The relational database must include tables in 3NF or BCNF. If it is required, show the normalization steps done for each table. For the tables that are already in 3NF or BCNF, write the proof based on the definition.
 
 \noindent
 Create a management tool for this database in C\# or Java. The application should be able to:
@@ -36,12 +36,15 @@ Create a management tool for this database in C\# or Java. The application shoul
 \end{itemize}
 
 \section*{Hand-in}
-The assignment must be handed in in natschool using the right submission folder. The hand-in must include:
+The implementation of the assignment should include:
 \begin{itemize}
 	\item The SQL code to generate the database tables.
 	\item A report that explains in what normal form each table is and why, and eventual normalization steps performed to normalize the table up to 3NF and BCNF.
 	\item The source code of the management application.
-	\item \textbf{Optional:} the ERD diagram used to model the database.
+	\item The ERD diagram used to model the database.
+	\item \textit{Optional:} A data access layer implemented from scratch using design pattern as explained in the book \textit{Pattern of Enterprise Application Architecture ISBN: 0-321-12742-0}
+	
+
 \end{itemize}
 
 \end{document}
