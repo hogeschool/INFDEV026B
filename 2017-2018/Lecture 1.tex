@@ -161,6 +161,7 @@ showstringspaces=false}
 	\begin{itemize}
 		\item Both kinds of definitions of normal forms rely on the concept of functional dependency.
 		\item In what follows we write \tuple{i}{X} to indicate the values of the row i of a table for a set of attributes X
+\pause
 		\item \textbf{Example}: \tuple{3}{SSN,HOURS,NAME} in the table below is the combination of values: 
 		\tuple{3}{SSN,HOURS,NAME} = \valseq{666884444,40.0,Narayan, Ramesh K.}
 	\end{itemize}
@@ -176,8 +177,8 @@ showstringspaces=false}
 	\frametitle{Normal forms}
 	\framesubtitle{Functional dependencies}
 	\textbf{Definition:}\\
-	Given a subset of attributes X and Y in a relation, we say that Y depends on X, and we write \fdep{X}{Y}, if for any pair of rows where we have \tuple{i}{X} = \tuple{j}{X} we also have \tuple{i}{Y} = \tuple{j}{Y}.
-	
+	Given a subset of attributes X and Y in a relation, we say that Y depends on X, and we write \fdep{X}{Y}, if for any pair of rows where we have \tuple{i}{X} = \tuple{j}{X} we also have \tuple{i}{Y} = \tuple{j}{Y}.\\
+\pause
 	\tiny
 	\textbf{Example: } In the table below we have, if we assume that there is a dependency \fdep{PNAME}{PLOCATION}, then when \tuple{i}{PNAME} = \tuple{j}{PNAME} we also have \tuple{i}{PLOCATION} = \tuple{j}{PLOCATION}. For instance every time we have the value 'ProductY' in the column PNAME, we also have 'Sugarland' in the column PLOCATION. It is not possible that a row has 'ProductY' in the column PNAME and 'Belaire' in the column PLOCATION.
 	
@@ -255,7 +256,7 @@ showstringspaces=false}
 	
 	\textbf{Definition:}
 	A table is in 2nd normal form (2NF) if it is in 1NF and every attribute that is not part of a key depends on the whole primary key.
-	
+\pause	
 	\begin{wrapfigure}{r}{0.5\textwidth}
 		%\vspace{-20pt}
 		\begin{center}
@@ -265,6 +266,7 @@ showstringspaces=false}
 		%\vspace{-10pt}
 	\end{wrapfigure}
 	
+\pause
 	\textbf{Example:}
 	The table to the right is not in 2NF because PNAME depends only on PNUMBER and not on the whole key. The same for PLOCATION
 	
@@ -374,13 +376,13 @@ showstringspaces=false}
 	A table is in 2NF if every attribute that is not part of a key is not partially dependent on any key of the table (primary or candidate)
 	
 	\includegraphics[scale=0.4]{img/normalization/norm12}
-	
+\pause	
 	\textbf{Example:}
 	The table is not in 2NF because a candidate key is
 	
 	\valseq{COUNTY\textunderscore NAME,LOT\#} 
 	
-	and the attribute AREA depends on LOT\#.
+	and the attribute TAX\textunderscore RATE depends on COUNTY\textunderscore NAME.
 \end{frame}
 
 \begin{frame}
