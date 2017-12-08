@@ -53,9 +53,11 @@ showstringspaces=false}
 	
 	\begin{itemize}
 		\item Find an attribute that is non-atomic, i.e. containing multiple values.
+\pause
 		\item Remove the non-atomic attribute from the first table creating a new table R1. The primary key of R1 is the primary key of the original relation.
 \pause
 		\item Create a new table R2 for this attribute. Add the attributes of the primary key of R1 to R2 and all the sub-attributes of the composite attribute. The attributes of the primary key of R1 in R2 are a foreign key to R1.
+\pause
 		\item The primary key of R2 is a combination of the primary key of R1 and all the sub-attributes having unique values.
 \pause
 		\item Repeat the procedure for all non-atomic attributes.		
@@ -83,8 +85,10 @@ showstringspaces=false}
 	
 	\begin{itemize}
 		\item Find a non-key attribute that is functionally dependent on a part of the primary key.
+\pause
 		\item Remove this attribute from the table.
 		\item Create a new relation containing this attribute and the subset of the key the attribute is dependent on. The latter will be the primary key of the new table referenced by the same attribute in the first table.
+\pause
 		\item Repeat the procedure for all the attributes that have a dependency that breaks 2NF.		
 	\end{itemize}
 \end{frame}
@@ -121,8 +125,11 @@ showstringspaces=false}
 	
 	\begin{itemize}
 		\item Find a functional dependency \fdep{X}{A} where X is not superkey of the table.
+\pause
 		\item Create a new table R1 without A
+\pause
 		\item Create a new table R2 and add to it X and A. X is the primary key of R2.
+\pause
 		\item The attribute X in R1 is a foreign key to R2.
 	\end{itemize}
 	
