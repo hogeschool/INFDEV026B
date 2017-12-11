@@ -109,8 +109,8 @@ COMMIT;
 \begin{itemize}
 	\item T1:	BEGIN   ship1.energy = ship1.energy - 10, ship2.shields = ship2.shields + 10    COMMIT
 	\item T2:	BEGIN   ship1.energy = 1.05 * ship1.energy,  ship2.shields = 1.05 * ship2.shields   COMMIT
-	
 \end{itemize}
+\pause
 \item The first transaction is using \texttt{ship1} energy to recharge \texttt{ship2} shields.  
 \item Both the energy and the shields are being recharged by a nearby generator which recharge by 5\% of the total amount.
 \item \red{How are those transaction scheduled?}	
@@ -172,6 +172,7 @@ COMMIT;
 				& W(s2) \\
 				& Commit\\		
 			\end{tabular}
+\pause
 		\end{table}
 		\item DBMS View of the second schedule:
 		\begin{table}
@@ -198,6 +199,7 @@ COMMIT;
 \begin{slide}{
 	\item Assume \texttt{s1.energy = 50}, \texttt{s2.shields = 70}.
 	\item At the end of the first schedule \texttt{s1.energy = 52.5} and \texttt{s2.shields = 84}.
+\pause
 	\item At the end of the second schedule \texttt{s1.energy = 40} and \texttt{s2.shields = 83.5}
 	\item The two schedules are not equivalent.
 }\end{slide}
@@ -249,6 +251,7 @@ COMMIT;
 	\item Transaction 1 reads and writes the energy. Does not commit
 	\item Meanwhile Transaction 2 reads the energy and the shields, writes them, and then commit.
 	\item Transaction 1 reads and writes the shields and commits.
+\pause
 	\item \textbf{Problem:} Transaction 2 reads the value of the energy before Transaction 1 commits.
 	\item The changes of Transaction 2 are overwritten by Transaction 1.
 }\end{slide}
@@ -278,6 +281,7 @@ COMMIT;
 		\item Transaction 1 reads the energy and computes the increment, saving it in variable B.
 		\item Transaction 2 reads the energy, writes it and commits.
 		\item Transaction 1 reads the energy again getting a different result.
+\pause
 		\item \textbf{Problem:} Transaction 1 reads the same value and gets two different results.
 	}\end{slide}
 	
