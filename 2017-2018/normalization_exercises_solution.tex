@@ -98,22 +98,21 @@ breaklines=true}
 			\centering
 			\begin{tabular}{|c|c|c|c|c|c|}
 				\hline
-				\multicolumn{6}{|c|}{\textbf{borrowed\tu books}}\\
+				\multicolumn{5}{|c|}{\textbf{borrowed\tu books}}\\
 				\hline
-				\underline{author} & \underline{car\tu num} & \underline{title} & \underline{date} & return\tu date \\
+				\underline{author} & \underline{card \tu num} & \underline{title} & \underline{date} & return\tu date \\
 				\hline
 			\end{tabular}
 		\end{table}
 		
 		\noindent
-		In \texttt{member} the attribute card\tu num is a foreign key to \texttt{library}.
+		In \texttt{borrows\tu books } the attribute card\tu num is a foreign key to \texttt{library}.
 	}
-		
+	
+	{The tables created at the previous step are in 2NF, because there are no functional dependencies that violates the second normal form}		
+\\
 	{
-		The tables rreated at the previous step are in 2NF because no functional dependencies exist.
-	}
-	{
-		All the tables at this point are in BCNF because all the dependencies have a superkey as left argument.}
+	All the tables at this point are in BCNF because all the dependencies have a superkey as left argument.}
 	
 	
 	
