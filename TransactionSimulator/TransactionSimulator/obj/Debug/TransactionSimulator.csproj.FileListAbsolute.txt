@@ -1,7 +1,0 @@
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\bin\Debug\TransactionSimulator.exe.config
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\bin\Debug\TransactionSimulator.exe
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\bin\Debug\TransactionSimulator.pdb
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\obj\Debug\TransactionSimulator.csprojResolveAssemblyReference.cache
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\obj\Debug\TransactionSimulator.exe
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\obj\Debug\TransactionSimulator.pdb
-C:\Users\Francesco\Documents\GitHub\Exam-and-practicum-solutions-for-teachers\INFDEV03-5 exams\TransactionSimulator\TransactionSimulator\obj\Debug\TransactionSimulator.csproj.CoreCompileInputs.cache
