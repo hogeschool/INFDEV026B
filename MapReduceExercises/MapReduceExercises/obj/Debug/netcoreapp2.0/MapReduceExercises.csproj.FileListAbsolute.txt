@@ -1,0 +1,11 @@
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\bin\Debug\netcoreapp2.0\MapReduceExercises.deps.json
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\bin\Debug\netcoreapp2.0\MapReduceExercises.runtimeconfig.json
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\bin\Debug\netcoreapp2.0\MapReduceExercises.runtimeconfig.dev.json
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\bin\Debug\netcoreapp2.0\MapReduceExercises.dll
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\bin\Debug\netcoreapp2.0\MapReduceExercises.pdb
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\obj\Debug\netcoreapp2.0\MapReduceExercises.csprojResolveAssemblyReference.cache
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\obj\Debug\netcoreapp2.0\MapReduceExercises.csproj.CoreCompileInputs.cache
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\obj\Debug\netcoreapp2.0\MapReduceExercises.AssemblyInfoInputs.cache
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\obj\Debug\netcoreapp2.0\MapReduceExercises.AssemblyInfo.cs
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\obj\Debug\netcoreapp2.0\MapReduceExercises.dll
+C:\Users\fdigi\Documents\Visual Studio 2017\Projects\MapReduceExercises\MapReduceExercises\obj\Debug\netcoreapp2.0\MapReduceExercises.pdb
