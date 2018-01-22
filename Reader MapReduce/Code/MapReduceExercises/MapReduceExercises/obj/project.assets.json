@@ -673,11 +673,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Users\\fdigi\\Documents\\Visual Studio 2017\\Projects\\MapReduceExercises\\MapReduceExercises\\MapReduceExercises.csproj",
+      "projectUniqueName": "C:\\Users\\fdigi\\Documents\\GitHub\\INFDEV026B\\Reader MapReduce\\Code\\MapReduceExercises\\MapReduceExercises\\MapReduceExercises.csproj",
       "projectName": "MapReduceExercises",
-      "projectPath": "C:\\Users\\fdigi\\Documents\\Visual Studio 2017\\Projects\\MapReduceExercises\\MapReduceExercises\\MapReduceExercises.csproj",
+      "projectPath": "C:\\Users\\fdigi\\Documents\\GitHub\\INFDEV026B\\Reader MapReduce\\Code\\MapReduceExercises\\MapReduceExercises\\MapReduceExercises.csproj",
       "packagesPath": "C:\\Users\\fdigi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\fdigi\\Documents\\Visual Studio 2017\\Projects\\MapReduceExercises\\MapReduceExercises\\obj\\",
+      "outputPath": "C:\\Users\\fdigi\\Documents\\GitHub\\INFDEV026B\\Reader MapReduce\\Code\\MapReduceExercises\\MapReduceExercises\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
