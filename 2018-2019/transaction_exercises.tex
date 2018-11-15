@@ -1,0 +1,111 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{enumitem}
+\author{Francesco Di Giacomo, Ahmad Omar}
+\date { }
+\title{Transaction scheduling}
+\usepackage{listings}
+\lstset{language=SQL,
+basicstyle=\ttfamily\footnotesize,
+frame=shadowbox,
+mathescape=true,
+showstringspaces=false,
+showspaces=false,
+showstringspaces = false,
+breaklines=true}
+\newcommand{\exerciseDesc}{Given the following interleaved execution of transactions, point out possible conflicts (name at least one) and give an equivale strict 2PL scheduling.}
+\newcounter{exerciseCount}
+\setcounter{exerciseCount}{1}
+\newcommand{\exercise}[1]
+{
+	\noindent
+	\textbf{Exercise \theexerciseCount:} \exerciseDesc \\\\#1
+	\setcounter{exerciseCount}{\theexerciseCount + 1}
+}
+
+\begin{document}
+	\maketitle
+	
+	\exercise{\begin{table}[!h]
+			\centering
+			\begin{tabular}{c|c}
+				T1 & T2 \\
+				\hline
+				& R(A) \\
+				R(A) & \\
+				R(B) & \\
+				& R(B) \\
+				& W(A) \\
+				Commit & \\
+				& Commit \\
+			\end{tabular}
+	\end{table}}
+
+	\exercise{\begin{table}[!h]
+			\centering
+			\begin{tabular}{c|c|c}
+				T1 & T2 & T3 \\
+				\hline
+				R(A) & & \\
+				& W(A) & \\
+				& & R(A) \\
+				& & R(B) \\
+				W(B) & & \\
+				& & Commit \\
+				W(A) & & \\
+				Commit & & \\
+				& Commit &
+			\end{tabular}
+	\end{table}}
+	
+	\newpage
+	\exercise{\begin{table}[!h]
+			\centering
+			\begin{tabular}{c|c|c}
+				T1 & T2 & T3 \\
+				\hline
+				R(A) & & \\
+				& R(C) & \\
+				& & R(C) \\
+				& & W(C) \\
+				& Commit & \\
+				W(A) & & \\
+				R(B) & & \\
+				& & R(B) \\
+				& & X(B) \\
+				Commit & & \\
+				& & Commit
+			\end{tabular}
+	\end{table}}
+
+	\exercise{\begin{table}[!h]
+			\centering
+			\begin{tabular}{c|c|c|c}
+				T1 & T2 & T3 & T4 \\
+				\hline
+				R(A) & & & \\
+				W(A) & & & \\
+				& R(B) & & \\
+				& R(A) & & \\
+				& & W(C) & \\
+				& & & R(A) \\
+				& & & W(C) \\
+				W(A) & & & \\
+				Commit & & & \\
+				& R(C) & & \\
+				& & Commit & \\
+				& & & Commit \\
+				& Commit & & 
+			\end{tabular}
+	\end{table}}
+	
+	
+
+\end{document}

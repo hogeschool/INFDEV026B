@@ -1,0 +1,210 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage{enumitem}
+\author{Francesco Di Giacomo, Ahmad Omar}
+\date { }
+\title{Normalization exercises}
+\usepackage{listings}
+\lstset{language=SQL,
+basicstyle=\ttfamily\footnotesize,
+frame=shadowbox,
+mathescape=true,
+showstringspaces=false,
+showspaces=false,
+showstringspaces = false,
+breaklines=true}
+\newcommand{\valseq}[1]{$\lbrace$ #1 $\rbrace$}
+\newcommand{\tuple}[2]{$t_{#1}$[#2]}
+\newcommand{\fdep}[2]{#1 $\rightarrow$ #2}
+
+\begin{document}
+	\maketitle
+	
+	\textbf{Note:} For each of the following exercises complete the following tasks:
+	\begin{enumerate}
+		\item (Complete after lesson 1) Find what normal form each of the following tables satisfies.Motivate the answer according the definition of normal forms seen in class.
+		\item (Complete after lesson 2) Apply the normalization algorithms seen in class to each table. Use intermediate refinements, i.e. if the table is in 1NF first normalize in 2NF and, if necessary, in BCNF.
+	\end{enumerate}
+	
+	
+	\paragraph*{Exercise 1 - Lockers}
+	
+	The attribute \texttt{locker} is multivalued and id is unique within the multivalue attribute.
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{6}{|c|}{\textbf{locker}} \\
+			\hline
+			\underline{teacher\textunderscore id} & name & surname & \multicolumn{3}{|c|}{locker} \\
+			\cline{4-6}
+			& & & id & key\textunderscore num & size \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 2 - Library}
+	
+	The attribute \texttt{borrowed\textunderscore books} is multivalued and the combination \valseq{\texttt{author,title,date}} is unique within this attribute. 
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{library}} \\
+			\hline
+			\underline{card\textunderscore num} & name & surname & \multicolumn{4}{|c|}{borrowed\textunderscore books} \\
+			\cline{4-7}
+			& & & author & title & date & return\textunderscore date \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 3 - Books}	
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{author}}{\texttt{author\textunderscore bdate}}
+		\item \fdep{\texttt{title}}{\texttt{genre,pages,section}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{6}{|c|}{\textbf{books}} \\
+			\hline
+			\underline{author} & \underline{title} & genre & author\textunderscore bdate & pages & section \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\newpage
+	
+	\paragraph*{Exercise 4 - Houses}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{postal\textunderscore code}}{\texttt{price,size}}
+		\item \fdep{\texttt{owner}}{\texttt{owner\textunderscore account}}
+	\end{itemize}
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{8}{|c|}{\textbf{houses}} \\
+			\hline
+			\underline{owner} & \underline{postal\textunderscore code} & \multicolumn{3}{|c|}{address} & price & size & account \\
+			\cline{3-5}
+			& & city & street & number & & & \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 5 - Port}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{ship\textunderscore name}}{\texttt{docked\textunderscore at,country,weight,class}}
+		\item \fdep{\texttt{docked\textunderscore at}}{\texttt{country}}
+		\item \fdep{\texttt{captain}}{\texttt{cpt\textunderscore license}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{port}} \\
+			\hline
+			\underline{ship\textunderscore name} & \underline{captain} & cpt\textunderscore license & weight & class & docked\textunderscore at & country \\
+			\hline			
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 6 - Cellar}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{producer}}{\texttt{country,location}}
+		\item \fdep{\texttt{wine}}{\texttt{bottling\textunderscore date,price/l,grape\textunderscore variety}}
+		\item \fdep{\texttt{location}}{\texttt{country}}
+		\item \fdep{\texttt{grape\textunderscore variety}}{\texttt{price/l}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{Cellar}} \\
+			\hline
+			\underline{producer} & \underline{wine} & bottling\textunderscore date & price/l & country & location & grape\textunderscore variety \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 7 - Courses}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{employee\textunderscore code}}{\texttt{name,surname}}
+		\item \fdep{\texttt{study\textunderscore points}}{\texttt{hours}}
+		\item \fdep{\texttt{course\textunderscore code}}{\texttt{hours,study\textunderscore points,course\textunderscore name}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{courses}} \\
+			\hline
+			\underline{employee\textunderscore code} & name & surname & study\textunderscore points & hours & \underline{course\textunderscore code} & course\textunderscore name \\[0.3cm]
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\newpage
+	
+	\paragraph*{Exercise 8 - Flights}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+		\item \fdep{\texttt{departure,arrival}}{\texttt{flight\textunderscore duration}}
+		\item \fdep{\texttt{captain\textunderscore code}}{\texttt{captain\textunderscore name}}
+		\item \fdep{\texttt{flight\textunderscore code}}{\texttt{plane\textunderscore model,departure,arrival,flight\textunderscore time}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{7}{|c|}{\textbf{flights}} \\
+			\hline
+			\underline{flight\textunderscore code} & plane\textunderscore model & departure & arrival & flight\textunderscore time & captain\textunderscore name & \underline{captain\textunderscore code} \\
+			\hline
+		\end{tabular}
+	\end{table}
+	
+	\paragraph*{Exercise 9 - Buildings}
+	The following functional dependencies are defined on the table:
+	\begin{itemize}[noitemsep]
+	\item \fdep{\texttt{material}}{\texttt{maximum\textunderscore pressure,specific\textunderscore weight}}
+	\item \fdep{\texttt{building\textunderscore length,building\textunderscore width,building\textunderscore height}}{\texttt{tax\textunderscore rate}}
+	\item \fdep{\texttt{building\textunderscore type\textunderscore code}}{\texttt{building\textunderscore length,building\textunderscore width,building\textunderscore height}}
+	\end{itemize}
+	
+	\begin{table}[!h]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			\multicolumn{6}{|c|}{\textbf{buildings}} \\
+			\hline
+			\underline{building\textunderscore type\textunderscore code} & \underline{component\textunderscore type} & \underline{material} & building\textunderscore length & building\textunderscore width & building\textunderscore height \\ 
+			\hline
+			\multicolumn{2}{|c|}{tax\textunderscore rate} & \multicolumn{2}{|c|}{maximum\textunderscore pressure} & \multicolumn{2}{|c|}{specific\textunderscore weight} \\
+			\hline
+		\end{tabular}
+	\end{table}
+
+\end{document}

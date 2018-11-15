@@ -1,0 +1,50 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{ulem}
+\usepackage[official]{eurosym}
+\title{Advanced Databases \& noSQL (INFDEV026B) \\ Assignment 1}
+\author { }
+\date { }
+\begin{document}
+\maketitle
+
+\section*{Context}
+A multinational company wants to update its information system by changing the database storing information about employees and their professional positions in the company itself. 
+The company will store each employee in the database, who is defined by his bsn, name, and surname. 
+The company might need to record multiple addresses for an employee, since it might require that he/she moves temporarily to a new address if he/she is working on a project abroad. Each address is identified by the country, the city, the street, the number, and a postal code. You can assume that the combination of street number and postal code is unique. The company needs to know at any moment which address is the residence of the employee.
+Each employee in the company can work in different positions at the same time. For example, John Smith might work as a Project leader and as a Software Developer. Each employee works a different amount of hours for each position. A position is identified by a name (for example Project leader), a description, and an hour fee (the salary per hour).
+For each employee the company stores his/her degrees, which are identified by a course, a school, and a level (bachelor, master of science, PhD, etc.). Note that the same person might have, for example, a bachelor in Computer Science and a master of science in Automation Engineering.
+Each position is connected to a project. For example, an employee can be Project Leader for the project Cryptographic Software Development for CIA and Software Developer for Physics Engines for computer games. Note that some positions are not necessarily connected to a project, for example an Employee manager participates in no project. A project is recorded with a unique id, a budget, and the total amount of allocated hours.
+The company needs to store the headquarters it owns. Each headquarters is identified by a unique building name, the number of rooms (offices, conference rooms, etc.), and the monthly rent. For each employee, the company records the main headquarters he/she works for. Projects are also located into headquarters, which might be different from the main headquarters of an employee working in that project. Each headquarters has an address as well, in the same format as the one of an employee.
+
+
+\section*{Task description}
+Given this description implement a relational database in a chosen system (PostGres, MySQL, Microsoft SQL Server, etc.). The use of ERD is strongly suggested. The relational database must include tables in 3NF or BCNF. If it is required, show the normalization steps done for each table. For the tables that are already in 3NF or BCNF, write the proof based on the definition.
+
+\noindent
+Create a management tool for this database in C\# or Java. The application should be able to:
+
+\begin{itemize}
+	\item Add, delete, or modify an employee, including the data about his/her address, education, and job position.
+	\item Add, modify, delete a project, including its location.
+	\item Assign an existing employee to a project.
+	\item Check what projects cannot pay the rent, that is, the rent is higher than 10\% of their budget.
+\end{itemize}
+
+\section*{Hand-in}
+The implementation of the assignment should include:
+\begin{itemize}
+	\item The SQL code to generate the database tables.
+	\item A report that explains in what normal form each table is and why, and eventual normalization steps performed to normalize the table up to 3NF and BCNF.
+	\item The source code of the management application.
+	\item The ERD diagram used to model the database.
+	\item \textit{Optional:} A data access layer implemented from scratch using design pattern as explained in the book \textit{Pattern of Enterprise Application Architecture ISBN: 0-321-12742-0}
+	
+
+\end{itemize}
+
+\end{document}
