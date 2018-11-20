@@ -181,9 +181,9 @@ showstringspaces=false}
 		\includegraphics[scale=0.4]{img/normalization/norm5}
 	\end{figure}
 	\begin{itemize}
-		\item \textbf{Example}: \tuple{3}{SSN,HOURS,NAME} in the table below is the combination of values: 
+		\item \textbf{Example}: \tuple{3}{SSN,HOURS,ENAME} in the table below is the combination of values: 
 		\pause
-		\tuple{3}{SSN,HOURS,NAME} = \valseq{666884444,40.0,Narayan, Ramesh K.}
+		\tuple{3}{SSN,HOURS,ENAME} = \valseq{666884444,40.0,Narayan, Ramesh K.}
 	\end{itemize}
 \end{frame}
 
@@ -194,13 +194,13 @@ showstringspaces=false}
 	\framesubtitle{Functional dependencies}
 	\textbf{Definition:}\\
 	Given a subset of attributes X and Y in a relation, we say that Y depends on X, and we write \fdep{X}{Y}, if for any pair of rows where we have \tuple{i}{X} = \tuple{j}{X} we also have \tuple{i}{Y} = \tuple{j}{Y}.\\
-\pause
-	\tiny
-	\textbf{Example: } In the table below we have, if we assume that there is a dependency \fdep{PNAME}{PLOCATION}, then when \tuple{i}{PNAME} = \tuple{j}{PNAME} we also have \tuple{i}{PLOCATION} = \tuple{j}{PLOCATION}. For instance every time we have the value 'ProductY' in the column PNAME, we also have 'Sugarland' in the column PLOCATION. It is not possible that a row has 'ProductY' in the column PNAME and 'Belaire' in the column PLOCATION.
-	
 	\begin{figure}
 		\includegraphics[scale=0.4]{img/normalization/norm6}
 	\end{figure}
+	\pause
+	\tiny
+	\textbf{Example: } In the table below we have, if we assume that there is a dependency \fdep{PNAME}{PLOCATION}, then when \tuple{i}{PNAME} = \tuple{j}{PNAME} we also have \tuple{i}{PLOCATION} = \tuple{j}{PLOCATION}. \\For instance every time we have the value 'ProductY' in the column PNAME, we also have 'Sugarland' in the column PLOCATION. It is not possible that a row has 'ProductY' in the column PNAME and 'Belaire' in the column PLOCATION.
+	
 \end{frame}
 
 \begin{frame}
@@ -262,7 +262,7 @@ showstringspaces=false}
 	
 	\textbf{Definition:}
 	A table is in 1st normal form (1NF) if no row has multiple values for an attribute.
-	
+	\pause
 	\textbf{Example:} The table to the right violates the 1NF since some rows have multiple values for PNUMBER and HOURS.
 \end{frame}
 
@@ -393,11 +393,10 @@ showstringspaces=false}
 	
 	\includegraphics[scale=0.4]{img/normalization/norm12}
 \pause	
+\\
 	\textbf{Example:}
 	The table is not in 2NF because a candidate key is
-	
 	\valseq{COUNTY\textunderscore NAME,LOT\#} 
-	
 	and the attribute TAX\textunderscore RATE depends on COUNTY\textunderscore NAME.
 \end{frame}
 
