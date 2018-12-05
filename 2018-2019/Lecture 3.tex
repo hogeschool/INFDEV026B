@@ -46,6 +46,7 @@ Rotterdam, Netherlands}
 \item Disk accesses frequent, relatively slow. Important to keep the cpu busy by working on several user programs concurrently.
 \item Client application may carry out many operations on the data retrieved from the database.
 \item DBMS is only concerned about what data is read/written from/to the database.
+\pause
 \item A \textit{transaction} is the DBMS’s abstract view of a user program:  a sequence of \red{reads} and \red{writes}.
 }\end{slide}
 
@@ -198,6 +199,7 @@ COMMIT;
 \SlideSubSection{Non-equivalent transaction results}
 \begin{slide}{
 	\item Assume \texttt{s1.energy = 50}, \texttt{s2.shields = 70}.
+	\pause
 	\item At the end of the first schedule \texttt{s1.energy = 52.5} and \texttt{s2.shields = 84}.
 \pause
 	\item At the end of the second schedule \texttt{s1.energy = 40} and \texttt{s2.shields = 83.5}
